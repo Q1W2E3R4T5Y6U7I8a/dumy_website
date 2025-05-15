@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <title>Redirecting...</title>
     <script>
-      sessionStorage.redirect = location.pathname;
+      sessionStorage.setItem('redirect', window.location.pathname);
+      window.location.href = '/dumy_website/';
     </script>
-    <meta http-equiv="refresh" content="0;URL='/'">
   </head>
   <body>
     Redirecting...
