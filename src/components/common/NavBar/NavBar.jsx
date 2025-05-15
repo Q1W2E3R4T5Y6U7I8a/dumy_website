@@ -11,7 +11,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar__left">
         <Link to="/" className="navbar__logo">
-          <img src="/DUMY_logo.png" alt="DUMY Logo" className="navbar__logo-image" />
+          <img src={`${process.env.PUBLIC_URL}/DUMY_logo.png`} alt="DUMY Logo" className="navbar__logo-image" />
         </Link>
       </div>
 

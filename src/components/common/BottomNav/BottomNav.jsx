@@ -24,7 +24,7 @@ const BottomNav = () => {
 
         <div className="bottomnav__music-container">
           <img
-            src={volume === 0 ? '/stop_sound_icon.png' : '/sound_icon.png'}
+            src={volume === 0 ? `${process.env.PUBLIC_URL}/stop_sound_icon.png` : `${process.env.PUBLIC_URL}/sound_icon.png`}
             alt="music toggle"
             className="bottomnav__music-icon"
           />

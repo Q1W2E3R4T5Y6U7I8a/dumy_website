@@ -93,7 +93,7 @@ const FriendsPage = () => {
           <div className="users-list">
             {users.map((user) => (
               <div key={user.id} className="user-card">
-                <img src={user.photoURL || '/no_avatar.png'} alt={user.displayName} />
+                <img src={user.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`} alt={user.displayName} />
                 <h3>{user.displayName}</h3>
                 <p>{user.aboutMe || 'No information provided.'}</p>
                 {friends.includes(user.id) ? (
@@ -114,7 +114,7 @@ const FriendsPage = () => {
                 .filter((user) => friends.includes(user.id))
                 .map((user) => (
                   <div key={user.id} className="user-card">
-                    <img src={user.photoURL || '/no_avatar.png'} alt={user.displayName} />
+                    <img src={user.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`} alt={user.displayName} />
                     <h3>{user.displayName}</h3>
                     <p>{user.aboutMe || 'No information provided.'}</p>
                     <button onClick={() => handleRemoveFriend(user.id)}>Remove Friend</button>

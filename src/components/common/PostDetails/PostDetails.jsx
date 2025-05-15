@@ -308,7 +308,7 @@ export default function PostDetails() {
           className={`like-button ${isLiked ? 'active' : ''}`}
         >
           <img
-            src={isLiked ? '/heart_icon_active.png' : '/heart_icon.png'}
+            src={isLiked ? `${process.env.PUBLIC_URL}/heart_icon_active.png` : `${process.env.PUBLIC_URL}/heart_icon.png`}
             alt="Like"
           />
           <span>{post.likes || 0}</span>
@@ -318,7 +318,7 @@ export default function PostDetails() {
           onClick={() => setIsCommentsVisible(!isCommentsVisible)}
           className="comment-button"
         >
-          <img src="/comments.png" alt="Comments" />
+          <img src={`${process.env.PUBLIC_URL}/comments.png`} alt="Comments" />
           <span>{post.comments || 0}</span>
         </button>
       </div>

@@ -6,24 +6,22 @@ const MusicPage = () => {
   const [currentTrackName, setCurrentTrackName] = useState('');
 
   const musicList = [
-    'music_1.mp3',
-    'music_2.mp3',
-    'music_3.mp3',
-    'music_4.mp3',
-    'music_5.mp3',
-    'music_6.mp3',
+    `${process.env.PUBLIC_URL}/music_1.mp3`,
+    `${process.env.PUBLIC_URL}/music_3.mp3`,
+    `${process.env.PUBLIC_URL}/music_4.mp3`,
+    `${process.env.PUBLIC_URL}/music_5.mp3`,
+    `${process.env.PUBLIC_URL}/music_6.mp3`,
   ];
 
   const handlePlay = (track) => {
     if (currentTrack) {
       currentTrack.pause();
     }
-    const audio = new Audio(`/${track}`); // Correct path for public folder
+    const audio = new Audio(track); 
     audio.play();
     setCurrentTrack(audio);
     setCurrentTrackName(track);
 
-    // Stop the track when it ends
     audio.onended = () => {
       setCurrentTrack(null);
       setCurrentTrackName('');

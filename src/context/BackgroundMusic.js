@@ -11,8 +11,8 @@ const BackgroundMusic = ({ children }) => {
   const [currentTrack, setCurrentTrack] = useState('');
 
   const trackMap = {
-    default: '/background_music.mp3',
-    duma: '/background_duma.mp3',
+    default: `${process.env.PUBLIC_URL}/background-music.mp3`,
+    duma: `${process.env.PUBLIC_URL}/background_duma.mp3`,
   };
 
   const getTrackForRoute = (path) => {

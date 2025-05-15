@@ -17,14 +17,14 @@ const QuoteSquare = () => {
           />
           {/* Add logo images */}
           <img 
-            src="/DUMY_logo_black.png" 
+            src={`${process.env.PUBLIC_URL}/DUMY_logo_black.png`} 
             alt="Logo" 
             className="quote-square__logo quote-square__logo--left"
           />
           
           <div className="quote-square__content">
             <img 
-              src="/brackets_left.png" 
+              src={`${process.env.PUBLIC_URL}/brackets_left.png`} 
               alt="Left quote mark" 
               className="quote-square__scobe quote-square__scobe--left"
             />
@@ -36,7 +36,7 @@ const QuoteSquare = () => {
             </div>
             
             <img 
-              src="/brackets_right.png" 
+              src={`${process.env.PUBLIC_URL}/brackets_right.png`} 
               alt="Right quote mark" 
               className="quote-square__scobe quote-square__scobe--right"
             />

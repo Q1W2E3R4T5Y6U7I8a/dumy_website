@@ -16,16 +16,15 @@ const AccountPage = () => {
   const [userPosts, setUserPosts] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const avatarOptions = [
-    '/avatar_1.png',
-    '/avatar_2.png',
-    '/avatar_3.png',
-    '/avatar_4.png',
-    '/avatar_5.png',
-    '/avatar_6.png',
-    '/avatar_7.png',
-    '/avatar_8.png',
-    '/avatar_9.png',
-
+    `${process.env.PUBLIC_URL}/avatar_1.png`,
+    `${process.env.PUBLIC_URL}/avatar_2.png`,
+    `${process.env.PUBLIC_URL}/avatar_3.png`,
+    `${process.env.PUBLIC_URL}/avatar_4.png`,
+    `${process.env.PUBLIC_URL}/avatar_5.png`,
+    `${process.env.PUBLIC_URL}/avatar_6.png`,
+    `${process.env.PUBLIC_URL}/avatar_7.png`,
+    `${process.env.PUBLIC_URL}/avatar_8.png`,
+    `${process.env.PUBLIC_URL}/avatar_9.png`,
   ];
   const selectionOptions = {
     religion: ['Christianity', 'Islam', 'Hinduism', 'Buddhism', 'Judaism', 'Atheism', 'Other'],
@@ -128,10 +127,10 @@ const AccountPage = () => {
 
   const handleAvatarSelect = async (avatarUrl) => {
     try {
-      await updateProfile(currentUser, { photoURL: avatarUrl });
-      const userRef = doc(db, 'userInfo', currentUser.uid);
+      await updateProfile(auth.currentUser, { photoURL: avatarUrl }); 
+      const userRef = doc(db, 'userInfo', auth.currentUser.uid);
       await setDoc(userRef, { photoURL: avatarUrl }, { merge: true });
-      setUserInfo(prev => ({ ...prev, photoURL: avatarUrl }));
+      setUserInfo((prev) => ({ ...prev, photoURL: avatarUrl }));
     } catch (error) {
       console.error('Error updating avatar:', error);
     }
@@ -168,7 +167,11 @@ const AccountPage = () => {
       <div className="profile-section">
         <div className="profile-card">
           <div className="profile-header">
-            <img src={userInfo.photoURL} alt="Profile" className="current-avatar" />
+          <img
+            src={userInfo.photoURL.startsWith('http') ? userInfo.photoURL : `${process.env.PUBLIC_URL}${userInfo.photoURL}`}
+            alt="Profile"
+            className="current-avatar"
+          />
             {isEditing ? (
               <div className="profile-name">
                 <input
@@ -220,7 +223,7 @@ const AccountPage = () => {
             {friends.length > 0 ? (
               friends.map((friend) => (
                 <div key={friend.id} className="friend-card">
-                  <img src={friend.photoURL || '/no_avatar.png'} alt={friend.displayName} />
+                  <img src={friend.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`} alt={friend.displayName} />
                   <Link to={`/account/${friend.id}`}>{friend.displayName}</Link>
                 </div>
               ))
@@ -250,9 +253,9 @@ const AccountPage = () => {
           <h3>Your Books</h3>
           <div className="book-list">
             {userBooks.map((book, index) => (
-              <div key={book.id || index} className="book-card">
+              <div key={book.id || index} className="book-card"><img src={`${process.env.PUBLIC_URL}${book.imageUrl}`} alt={book.title} />
                 <div className="book-cover">
-                  <img src={book.imageUrl} alt={book.title} />
+                  <img src={`${process.env.PUBLIC_URL}${book.imageUrl}`} alt={book.title} />
                 </div>
                 <div className="book-details">
                   <h4>{book.title}</h4>

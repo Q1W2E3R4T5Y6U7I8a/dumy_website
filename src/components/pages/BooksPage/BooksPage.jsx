@@ -138,13 +138,13 @@ const BooksPage = () => {
         {books.map(book => (
           <div key={book.id || book.title} className="book">
             <img
-              src={book.userPhotoURL || '/no_avatar.png'}
+              src={book.userPhotoURL || `${process.env.PUBLIC_URL}/no_avatar.png`}
               alt="User Avatar"
               className="user-avatar"
             />
             <strong>{book.title} — {book.author}</strong>
             <p>{book.description}</p>
-            <img src={book.imageUrl} alt={book.title} className="book-image" />
+            <img src={`${process.env.PUBLIC_URL}${book.imageUrl}`} alt={book.title} className="book-image" />
             {book.userId === auth.currentUser.uid && (
               <div className="actions">
                 <button onClick={() => handleEdit(book)}>Edit</button>

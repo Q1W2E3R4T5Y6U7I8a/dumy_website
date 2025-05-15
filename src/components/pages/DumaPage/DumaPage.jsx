@@ -239,7 +239,7 @@ const advanceCard = () => {
     return (
       <div className="element-circle">
         <div className="element-fill" style={{ height: `${level}%` }}>
-          <img src={elementIcons[element]} alt={element} />
+          <img src={`${process.env.PUBLIC_URL}${elementIcons[element]}`} alt={element} />
         </div>
       </div>
     );
@@ -275,7 +275,7 @@ const advanceCard = () => {
           }}
         >
           <div className="image-container">
-            <img src={nextCard.image} alt="Next Card" className="character-image" />
+          <img src={`${process.env.PUBLIC_URL}${nextCard.image}`} alt="Next Card" className="character-image" />
           </div>
           <div className="card-content">
             {nextCard.title && <h2>{nextCard.title}</h2>}
@@ -304,7 +304,7 @@ const advanceCard = () => {
           }}
         >
           <div className="image-container">
-            <img src={currentCard.image} alt="Current Card" className="character-image" />
+          <img src={`${process.env.PUBLIC_URL}${currentCard.image}`} alt="Current Card" className="character-image" />
           </div>
           <div className="card-content">
             {currentCard.title && <h2>{currentCard.title}</h2>}
