@@ -29,7 +29,7 @@ import HelpPage from './components/pages/HelpPage/HelpPage';
 const App = () => {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename="/dumy_website">
         <div className="app">
           <BackgroundMusic>
             <NavBar />
