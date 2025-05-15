@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/dumy_website/static/css/main.3f5184fb.css",
-    "main.js": "/dumy_website/static/js/main.374c4d29.js",
+    "main.js": "/dumy_website/static/js/main.02b89b26.js",
     "static/js/453.eb600e17.chunk.js": "/dumy_website/static/js/453.eb600e17.chunk.js",
     "static/media/fire_100.mp3": "/dumy_website/static/media/fire_100.779cc3632b3134cb56e8.mp3",
     "static/media/earth_100.mp3": "/dumy_website/static/media/earth_100.0a91de32734e97fd41d8.mp3",
@@ -12,11 +12,11 @@
     "index.html": "/dumy_website/index.html",
     "static/media/down-chevron.svg": "/dumy_website/static/media/down-chevron.97654f494686f70b2315.svg",
     "main.3f5184fb.css.map": "/dumy_website/static/css/main.3f5184fb.css.map",
-    "main.374c4d29.js.map": "/dumy_website/static/js/main.374c4d29.js.map",
+    "main.02b89b26.js.map": "/dumy_website/static/js/main.02b89b26.js.map",
     "453.eb600e17.chunk.js.map": "/dumy_website/static/js/453.eb600e17.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3f5184fb.css",
-    "static/js/main.374c4d29.js"
+    "static/js/main.02b89b26.js"
   ]
 }
