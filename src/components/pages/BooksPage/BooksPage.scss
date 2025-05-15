@@ -1,0 +1,314 @@
+@import "../../../assets/scss/variables";
+
+.books-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background: linear-gradient(145deg, darken($dark, 5%) 0%, $darker 100%);
+  min-height: calc(100vh - 120px);
+  color: $lightest;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba($blue-main, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba($yellow-main, 0.15) 0%, transparent 40%);
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .info {
+    background-color: rgba($blue-main, 0.1);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    color: $blue-darkest;
+    font-size: 1rem;
+    line-height: 1.6;
+    border-left: 4px solid $yellow-main;
+    background: rgba($darkest, 0.75);
+    color: $lightest;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba($lightest, 0.15);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+
+    strong {
+      color: $yellow-main;
+      font-weight: 600;
+    }
+
+    span {
+      color: rgba($lightest, 0.7);
+      font-size: 0.9rem;
+    }
+  }
+
+  .add-btn {
+    padding: 0.8rem 1.8rem;
+    background: linear-gradient(135deg, rgba($blue-main, 0.3) 0%, rgba($blue-main, 0.15) 100%);
+    color: $lightest;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 5px 15px rgba($blue-main, 0.2);
+    margin-bottom: 2rem;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba($blue-main, 0.3);
+      background: linear-gradient(135deg, rgba($blue-main, 0.4) 0%, rgba($blue-main, 0.25) 100%);
+    }
+  }
+
+  .book-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 3rem;
+  }
+
+  .book {
+    background: rgba($darkest, 0.7);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba($lightest, 0.08);
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 18px 40px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba($blue-main, 0.25);
+      border-color: rgba($blue-main, 0.4);
+    }
+
+    strong {
+      color: $lightest;
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    p {
+      color: rgba($lightest, 0.8);
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .creator-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba($lightest, 0.2);
+      margin-bottom: 1rem;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .book-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin: 1rem 0;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba($lightest, 0.1);
+
+      button {
+        flex: 1;
+        padding: 0.7rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:first-child {
+          background: rgba($blue-main, 0.2);
+          color: $lightest;
+
+          &:hover {
+            background: rgba($blue-main, 0.4);
+          }
+        }
+
+        &.danger {
+          background: rgba($yellow-main, 0.2);
+          color: $lightest;
+
+          &:hover {
+            background: rgba($yellow-main, 0.4);
+          }
+        }
+      }
+    }
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease-out;
+
+    .modal-content {
+      background: linear-gradient(135deg, rgba($darkest, 0.9) 0%, rgba($darker, 0.95) 100%);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      padding: 2rem;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba($lightest, 0.1);
+
+      h3 {
+        color: $lightest;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 1rem;
+        background: rgba($darkest, 0.7);
+        border: 1px solid rgba($lightest, 0.1);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        color: $lightest;
+        transition: all 0.3s ease;
+
+        &::placeholder {
+          color: rgba($lightest, 0.5);
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $blue-main;
+          box-shadow: 0 0 0 2px rgba($blue-main, 0.3);
+        }
+      }
+
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      button {
+        width: 100%;
+        padding: 1rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        margin-top: 0.5rem;
+
+        &:first-of-type {
+          background: linear-gradient(135deg, $blue-main 0%, darken($blue-main, 10%) 100%);
+          color: $lightest;
+          box-shadow: 0 4px 15px rgba($blue-main, 0.3);
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba($blue-main, 0.4);
+          }
+        }
+
+        &:last-of-type {
+          background: transparent;
+          color: rgba($lightest, 0.7);
+          border: 1px solid rgba($lightest, 0.2);
+
+          &:hover {
+            background: rgba($lightest, 0.1);
+            color: $lightest;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .books-page {
+    padding: 2rem 1rem;
+
+    .book-list {
+      grid-template-columns: 1fr;
+    }
+
+    .modal {
+      .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .books-page {
+    padding: 1.5rem 0.5rem;
+
+    .book {
+      padding: 1rem;
+
+      .actions {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  }
+}

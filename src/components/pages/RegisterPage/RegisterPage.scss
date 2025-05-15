@@ -1,0 +1,142 @@
+@import '../../../assets/scss/variables.scss';
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, $blue-main, $yellow-main);
+  padding: 2rem;
+
+  .register-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 450px;
+    animation: fadeIn 0.5s ease-out;
+
+    h2 {
+      color: $blue-main;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    .error-message {
+      color: red;
+      background: rgba(red, 0.1);
+      padding: 0.8rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: $blue-main;
+        font-weight: 500;
+      }
+
+      input {
+        width: 92%;
+        padding: 0.8rem 1rem;
+        border: 1px solid $darkest;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+
+        &:focus {
+          outline: none;
+          color: $blue-main;
+          box-shadow: 0 0 0 3px rgba($blue-main, 0.2);
+        }
+      }
+    }
+
+    .register-button {
+      width: 100%;
+      padding: 1rem;
+      background: $blue-main;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.5rem;
+
+      &:hover {
+        background: darken($blue-main, 10%);
+      }
+
+      &:disabled {
+        background: $dark;
+        cursor: not-allowed;
+      }
+    }
+
+    .register-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: $yellow-main;
+
+      span {
+        color: $blue-main;
+        cursor: pointer;
+        font-weight: 500;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: darken($blue-main, 10%);
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .success-card {
+    text-align: center;
+    
+    .success-message {
+      color: $blue-main;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .register-button {
+      width: 100%;
+      padding: 1rem;
+      background: $blue-main;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.5rem;
+
+      &:hover {
+        background: darken($blue-main, 10%);
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
