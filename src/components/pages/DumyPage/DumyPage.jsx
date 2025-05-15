@@ -15,6 +15,7 @@ const DumyPage = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState({});
   const [showSortOptions, setShowSortOptions] = useState(false);
+  const [showFilterOptions, setShowFilterOptions] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -126,68 +127,6 @@ const DumyPage = () => {
   return (
     <div className="dumy-container">
       <div className="controls-container">
-        <div className="sort-toggle-container">
-          <button 
-            className="sort-toggle-button"
-            onClick={() => setShowSortOptions(!showSortOptions)}
-          >
-            Sort Options
-            <span className={`toggle-arrow ${showSortOptions ? 'open' : ''}`}>▼</span>
-          </button>
-
-          {showSortOptions && (
-            <div className="sort-options-dropdown">
-              <button 
-                onClick={() => setSortBy('date')} 
-                className={sortBy === 'date' ? 'active' : ''}
-              >
-                Date
-              </button>
-              <button 
-                onClick={() => setSortBy('views')} 
-                className={sortBy === 'views' ? 'active' : ''}
-              >
-                Views
-              </button>
-              <button 
-                onClick={() => setSortBy('likes')} 
-                className={sortBy === 'likes' ? 'active' : ''}
-              >
-                Likes
-              </button>
-              <button 
-                onClick={() => setSortBy('comments')} 
-                className={sortBy === 'comments' ? 'active' : ''}
-              >
-                Comments
-              </button>
-            </div>
-          )}
-        </div>
-
-        <div className="category-filters">
-          <div className="category-header">
-            <p>Filter by category:</p>
-            <div className="category-actions">
-              <button onClick={() => selectAllCategories(true)}>All</button>
-              <button onClick={() => selectAllCategories(false)}>None</button>
-            </div>
-          </div>
-          <div className="category-checkboxes">
-            {categories.map(category => (
-              <label key={category} className="category-label">
-                <input
-                  type="checkbox"
-                  checked={selectedCategories[category] !== false}
-                  onChange={() => handleCategoryToggle(category)}
-                />
-                <span className="checkbox-custom"></span>
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </label>
-            ))}
-          </div>
-        </div>
-      </div>
 
       <div className="posts-grid">
         {paginatedPosts.map(post => (
@@ -222,6 +161,82 @@ const DumyPage = () => {
           </button>
         </div>
       )}
+          <div className="filter-controls">
+            <div className="sort-toggle-container">
+              <button 
+                className="sort-toggle-button"
+                onClick={() => setShowSortOptions(!showSortOptions)}
+              >
+                Sort by:
+                <span className={`toggle-arrow ${showSortOptions ? 'open' : ''}`}>▼</span>
+              </button>
+  
+              {showSortOptions && (
+                <div className="sort-options-dropdown">
+                  <button 
+                        onClick={() => setSortBy('date')} 
+                        className={sortBy === 'date' ? 'active' : ''}
+                      >
+                        Date
+                      </button>
+                      <button 
+                        onClick={() => setSortBy('views')} 
+                        className={sortBy === 'views' ? 'active' : ''}
+                      >
+                        Views
+                      </button>
+                      <button 
+                        onClick={() => setSortBy('likes')} 
+                        className={sortBy === 'likes' ? 'active' : ''}
+                      >
+                        Likes
+                      </button>
+                      <button 
+                        onClick={() => setSortBy('comments')} 
+                        className={sortBy === 'comments' ? 'active' : ''}
+                      >
+                        Comments
+                      </button>
+                </div>
+              )}
+            </div>
+  
+            <div className="filter-toggle-container">
+              <button 
+                className="filter-toggle-button"
+                onClick={() => setShowFilterOptions(!showFilterOptions)}
+              >
+                Selected categories:
+                <span className={`toggle-arrow ${showFilterOptions ? 'open' : ''}`}>▼</span>
+              </button>
+  
+              {showFilterOptions && (
+                <div className="filter-options-dropdown">
+                  <div className="category-header">
+                    <div className="category-actions">
+                      <button onClick={() => selectAllCategories(true)}>All</button>
+                      <button onClick={() => selectAllCategories(false)}>None</button>
+                    </div>
+                  </div>
+                  <div className="category-checkboxes">
+                    {categories.map(category => (
+                      <label key={category} className="category-label">
+                        <input
+                          type="checkbox"
+                          checked={selectedCategories[category] !== false}
+                          onChange={() => handleCategoryToggle(category)}
+                          hidden
+                        />
+                        <span className="checkbox-custom"></span>
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
 
       <div className="add-post-button" onClick={() => navigate('/dumy/add')}>
         <div className="plus-icon">+</div>

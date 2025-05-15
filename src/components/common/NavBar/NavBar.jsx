@@ -23,11 +23,12 @@ const Navbar = () => {
 
       <div className="navbar__right">
         <Link to={`/account/${auth.currentUser?.uid}`} className="navbar__user-icon">
-          <img 
-            src={currentUser?.photoURL || '/no_avatar.png'} 
-            alt="Profile" 
-            className="navbar__profile-pic"
-          />
+        <img
+  src={`${process.env.PUBLIC_URL}${currentUser?.photoURL || '/no_avatar.png'}`}
+  alt="Profile"
+  className="navbar__profile-pic"
+/>
+
         </Link>
       </div>
     </nav>

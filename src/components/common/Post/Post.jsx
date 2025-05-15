@@ -14,15 +14,15 @@ const Post = ({ post }) => {
       </div>
       <div className="stats-container">
         <div className="stat-item">
-          <img src="/view.png" alt="Views" className="icon" />
+          <img src={`${process.env.PUBLIC_URL}/view.png`} alt="Views" className="icon" />
           <span className="stat-text">{post.views}</span>
         </div>
         <div className="stat-item">
-          <img src="/heart_icon_active.png" alt="Likes" className="icon" />
+          <img src={`${process.env.PUBLIC_URL}/heart_icon_active.png`} alt="Likes" className="icon" />
           <span className="stat-text">{post.likes}</span>
         </div>
         <div className="stat-item">
-          <img src="/comments.png" alt="Comments" className="icon" />
+          <img src={`${process.env.PUBLIC_URL}/comments.png`} alt="Comments" className="icon" />
           <span className="stat-text">{post.comments}</span>
         </div>
         <div className="stat-item">

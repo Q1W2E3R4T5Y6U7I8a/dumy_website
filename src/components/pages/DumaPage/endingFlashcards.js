@@ -1,7 +1,7 @@
 export const endingFlashcards = [
   {
     id: 'air_100',
-    image: require('../../../assets/images/air_100.png'),
+    image: '/air_icon.png',
     title: 'Sky Dominion',
     description: { yes: "Restart!", no: "Restart..." },
     question: 'Excessive idealism detached humanity from reality. Societies crumbled as people pursued impossible dreams, neglecting basic needs.',
@@ -10,7 +10,7 @@ export const endingFlashcards = [
   },
   {
     id: 'air_0',
-    image: require('../../../assets/images/air_100.png'),
+    image: '/air_icon.png',
     title: 'Grounded Eternity',
     description: { yes: "Restart!", no: "Restart..." },
     question: 'Without vision, humanity became stagnant. No progress was made as fear of failure prevented any ambitious endeavors.',
@@ -19,7 +19,7 @@ export const endingFlashcards = [
   },
   {
     id: 'earth_100',
-    image: require('../../../assets/images/earth_100.png'),
+    image: '/earth_icon.png',
     title: 'Stone Age Redux',
     description: { yes: "Restart!", no: "Restart..." },
     question: 'Total focus on stability led to rigidity. Innovation ceased, and societies collapsed under the weight of unchangeable tradition.',
@@ -28,7 +28,7 @@ export const endingFlashcards = [
   },
   {
     id: 'earth_0',
-    image: require('../../../assets/images/earth_100.png'),
+    image: '/earth_icon.png',
     title: 'Floating Foundations',
     description: { yes: "Restart!", no: "Restart..." },
     question: 'Lack of grounding caused chaos. With no roots, communities drifted aimlessly, unable to build lasting systems or trust.',
@@ -37,7 +37,7 @@ export const endingFlashcards = [
   },
   {
     id: 'fire_100',
-    image: require('../../../assets/images/fire_100.png'),
+    image: '/fire_icon.png',
     title: 'Ashes of Glory',
     description: { yes: "Restart!", no: "Restart..." },
     question: 'Unchecked ambition led to war and destruction. Great achievements came at the cost of widespread suffering and irreversible damage.',
@@ -46,7 +46,7 @@ export const endingFlashcards = [
   },
   {
     id: 'fire_0',
-    image: require('../../../assets/images/fire_100.png'),
+    image: '/fire_icon.png',
     title: 'Frozen Hearts',
     description: { yes: "Restart!", no: "Restart..." },
     question: 'With no drive, humanity grew cold. Life became mechanical, passionless, and devoid of creation or courage.',
@@ -55,7 +55,7 @@ export const endingFlashcards = [
   },
   {
     id: 'water_100',
-    image: require('../../../assets/images/water_100.png'),
+    image: '/water_icon.png',
     title: 'Drowned in Empathy',
     description: { yes: "Restart!", no: "Restart..." },
     description: 'Too much compassion led to indecision and collapse. Boundaries dissolved as emotions ruled over reason and structure.',
@@ -64,7 +64,7 @@ export const endingFlashcards = [
   },
   {
     id: 'water_0',
-    image: require('../../../assets/images/water_100.png'),
+    image: '/water_icon.png',
     title: 'Desert of Connection',
     description: { yes: "Restart!", no: "Restart..." },
     question: 'Emotional neglect turned societies dry and isolating. Without empathy, relationships withered and collective strength faded.',

@@ -8,7 +8,7 @@ import { auth } from '../../../firebase';
 const AddPostPage = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState(''); 
-  const [category, setCategory] = useState('uncategorized');
+  const [category, setCategory] = useState('');
   const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
 

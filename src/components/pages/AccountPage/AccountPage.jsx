@@ -62,7 +62,6 @@ const AccountPage = () => {
   };
   
   const [userInfo, setUserInfo] = useState(initialUserInfo);
-  const [quote, setQuote] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -127,12 +126,25 @@ const AccountPage = () => {
 
   const handleAvatarSelect = async (avatarUrl) => {
     try {
-      await updateProfile(auth.currentUser, { photoURL: avatarUrl }); 
+      // Extract just the filename part
+      const relativeAvatarUrl = avatarUrl.replace(`${process.env.PUBLIC_URL}`, '');
+      
+      await updateProfile(auth.currentUser, { 
+        photoURL: relativeAvatarUrl 
+      });
+      
       const userRef = doc(db, 'userInfo', auth.currentUser.uid);
-      await setDoc(userRef, { photoURL: avatarUrl }, { merge: true });
-      setUserInfo((prev) => ({ ...prev, photoURL: avatarUrl }));
+      await setDoc(userRef, { 
+        photoURL: relativeAvatarUrl 
+      }, { merge: true });
+      
+      setUserInfo(prev => ({ 
+        ...prev, 
+        photoURL: relativeAvatarUrl 
+      }));
     } catch (error) {
       console.error('Error updating avatar:', error);
+      alert('Failed to update avatar.');
     }
   };
 
@@ -168,7 +180,7 @@ const AccountPage = () => {
         <div className="profile-card">
           <div className="profile-header">
           <img
-            src={userInfo.photoURL.startsWith('http') ? userInfo.photoURL : `${process.env.PUBLIC_URL}${userInfo.photoURL}`}
+            src={`${process.env.PUBLIC_URL}${userInfo.photoURL}`}
             alt="Profile"
             className="current-avatar"
           />
@@ -195,12 +207,12 @@ const AccountPage = () => {
                 {avatarOptions.map((avatar, index) => (
                   <div 
                     key={index} 
-                    className={`avatar-option ${userInfo.photoURL === avatar ? 'selected' : ''}`}
+                    className={`avatar-option ${userInfo.photoURL === avatar.replace(`${process.env.PUBLIC_URL}`, '') ? 'selected' : ''}`}
                     onClick={() => handleAvatarSelect(avatar)}
                   >
                     <img src={avatar} alt={`Avatar ${index + 1}`} />
                   </div>
-                ))}
+                ))} 
               </div>
             </div>
           )}

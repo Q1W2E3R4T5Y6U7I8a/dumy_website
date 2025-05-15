@@ -5,13 +5,17 @@ import {
   onSnapshot,
   doc,
   updateDoc,
-  deleteDoc
+  deleteDoc,
+  getDoc
 } from 'firebase/firestore';
 import { db, auth } from '../../../firebase';
 import './BooksPage.scss';
+import { Link } from 'react-router-dom';
 
 
 const BooksPage = () => {
+  const [userAvatars, setUserAvatars] = useState({});
+
   const [books, setBooks] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -25,15 +29,32 @@ const BooksPage = () => {
   });
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'books'), snapshot => {
-      const booksData = snapshot.docs.map(doc => 
-        ({ id: doc.id, 
-        ...doc.data() 
-      }));
+    const unsubscribe = onSnapshot(collection(db, 'books'), async (snapshot) => {
+      const booksData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setBooks(booksData);
+  
+      // Get unique userIds
+      const userIds = [...new Set(booksData.map(book => book.userId))];
+  
+      // Fetch userInfo documents for those userIds
+      const avatars = {};
+      for (const uid of userIds) {
+        try {
+          const userDoc = await getDoc(doc(db, 'userInfo', uid));
+          if (userDoc.exists()) {
+            avatars[uid] = userDoc.data().photoURL;
+          }
+        } catch (err) {
+          console.error(`Error fetching avatar for ${uid}:`, err);
+        }
+      }
+  
+      setUserAvatars(avatars);
     });
+  
     return () => unsubscribe();
   }, []);
+  
 
     const addOrUpdateBook = async () => {
     const { id, title, author, contact, description, imageUrl } = newBook;
@@ -51,7 +72,7 @@ const BooksPage = () => {
           contact,
           description,
           imageUrl,
-          userPhotoURL: auth.currentUser.photoURL || '/no_avatar.png',
+          userPhotoURL: auth.currentUser.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`,
         });
   
         // Update the book in the local state
@@ -63,7 +84,6 @@ const BooksPage = () => {
           )
         );
       } else {
-        // Add new book
         const docRef = await addDoc(collection(db, 'books'), {
           title,
           author,
@@ -71,10 +91,9 @@ const BooksPage = () => {
           description,
           imageUrl,
           userId: auth.currentUser.uid,
-          userPhotoURL: auth.currentUser.photoURL || '/no_avatar.png',
+          userPhotoURL: auth.currentUser.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`,
         });
   
-        // Add the new book to the local state
         setBooks((prevBooks) => [
           ...prevBooks,
           {
@@ -85,12 +104,11 @@ const BooksPage = () => {
             description,
             imageUrl,
             userId: auth.currentUser.uid,
-            userPhotoURL: auth.currentUser.photoURL || '/no_avatar.png',
+            userPhotoURL: auth.currentUser.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`,
           },
         ]);
       }
   
-      // Reset modal and form state
       setModalVisible(false);
       setNewBook({ id: null, title: '', author: '', contact: '', description: '', imageUrl: '' });
       setIsEditing(false);
@@ -127,7 +145,7 @@ const BooksPage = () => {
     <div className="books-page">
     <div className="container">
       <p className="info">
-        <strong>Strangely and non natural seems a person, that extists without books</strong>
+        <strong>Strangely and non natural seems a person, that exists without books</strong>
         <br />
         <span> ©️ Taras Shevchenko</span>
       </p>
@@ -137,11 +155,23 @@ const BooksPage = () => {
       <div className="book-list">
         {books.map(book => (
           <div key={book.id || book.title} className="book">
-            <img
-              src={book.userPhotoURL || `${process.env.PUBLIC_URL}/no_avatar.png`}
-              alt="User Avatar"
-              className="user-avatar"
-            />
+            <Link to={`/account/${book.userId}`} className="creator-link">
+              <img
+                src={
+                  userAvatars[book.userId]?.startsWith('http')
+                    ? userAvatars[book.userId]
+                    : `${process.env.PUBLIC_URL}${userAvatars[book.userId] || '/no_avatar.png'}`
+                }
+                alt="User Avatar"
+                className="creator-avatar"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`;
+                }}
+              />
+            </Link>
+
+ 
             <strong>{book.title} — {book.author}</strong>
             <p>{book.description}</p>
             <img src={`${process.env.PUBLIC_URL}${book.imageUrl}`} alt={book.title} className="book-image" />

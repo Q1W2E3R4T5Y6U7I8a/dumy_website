@@ -18,7 +18,7 @@ const initialElements = {
   water: 1
 };
 
-const swipeSound = new Audio('/card_swipe.mp3');
+const swipeSound = new Audio(`${process.env.PUBLIC_URL}/card_swipe.mp3`);
 
 export default function DumaPage() {
   const { playTrack, stopAllMusic } = useContext(BackgroundMusicContext);
@@ -267,7 +267,6 @@ const advanceCard = () => {
       </div>
 
       <div className="card-stack">
-        {/* Next card (behind current card) */}
         <div 
           className={`card next ${nextCardVisible ? 'visible' : ''}`}
           style={{
@@ -283,7 +282,6 @@ const advanceCard = () => {
           </div>
         </div>
 
-        {/* Current card (draggable) */}
         <div 
           className={`card current ${swipeDirection || ''} ${isAnimating ? 'animate' : ''}`}
           ref={cardRef}

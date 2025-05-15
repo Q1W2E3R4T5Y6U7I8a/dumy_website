@@ -224,7 +224,7 @@ export default function PostDetails() {
         date: new Date(),
         author: auth.currentUser.displayName || 'Anonymous',
         authorId: auth.currentUser.uid,
-        authorPhotoURL: auth.currentUser.photoURL || '/no_avatar.png',
+        authorPhotoURL: auth.currentUser.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`,
       };
   
       const commentRef = await addDoc(commentsRef, newCommentData);
@@ -287,11 +287,17 @@ export default function PostDetails() {
           <>
           <h3>About author:</h3>
             <Link to={`/account/${post.userId}`} className="creator-link">
-              <img
-                src={userInfo.photoURL || '/no_avatar.png'}
-                alt={userInfo.displayName || 'Unknown User'}
-                className="creator-avatar"
-              />
+            <img
+              src={
+                userInfo.photoURL?.startsWith('http')
+                  ? userInfo.photoURL
+                  : `${process.env.PUBLIC_URL}${userInfo.photoURL || '/no_avatar.png'}`
+              }
+              alt={userInfo.displayName || 'Unknown User'}
+              className="creator-avatar"
+              onError={(e) => (e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`)}
+            />
+
               
               <span className="creator-name">
                 {userInfo.displayName || 'Unknown User'}
