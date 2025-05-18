@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/dumy_website/static/css/main.eae958de.css",
-    "main.js": "/dumy_website/static/js/main.da4e6eb1.js",
+    "main.css": "/dumy_website/static/css/main.0392c791.css",
+    "main.js": "/dumy_website/static/js/main.fb55d3b5.js",
     "static/js/453.eb600e17.chunk.js": "/dumy_website/static/js/453.eb600e17.chunk.js",
     "static/media/fire_100.mp3": "/dumy_website/static/media/fire_100.779cc3632b3134cb56e8.mp3",
     "static/media/earth_100.mp3": "/dumy_website/static/media/earth_100.0a91de32734e97fd41d8.mp3",
@@ -11,12 +11,12 @@
     "static/media/water_100.mp3": "/dumy_website/static/media/water_100.7b61b88711b7dad52f7c.mp3",
     "index.html": "/dumy_website/index.html",
     "static/media/down-chevron.svg": "/dumy_website/static/media/down-chevron.97654f494686f70b2315.svg",
-    "main.eae958de.css.map": "/dumy_website/static/css/main.eae958de.css.map",
-    "main.da4e6eb1.js.map": "/dumy_website/static/js/main.da4e6eb1.js.map",
+    "main.0392c791.css.map": "/dumy_website/static/css/main.0392c791.css.map",
+    "main.fb55d3b5.js.map": "/dumy_website/static/js/main.fb55d3b5.js.map",
     "453.eb600e17.chunk.js.map": "/dumy_website/static/js/453.eb600e17.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.eae958de.css",
-    "static/js/main.da4e6eb1.js"
+    "static/css/main.0392c791.css",
+    "static/js/main.fb55d3b5.js"
   ]
 }
