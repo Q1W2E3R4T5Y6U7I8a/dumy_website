@@ -12,11 +12,11 @@ import { db, auth } from '../../../firebase';
 import './BooksPage.scss';
 import { Link } from 'react-router-dom';
 
-
 const BooksPage = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [userAvatars, setUserAvatars] = useState({});
-
   const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newBook, setNewBook] = useState({
@@ -27,17 +27,23 @@ const BooksPage = () => {
     description: '',
     imageUrl: ''
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState('date');
+  const [showSortOptions, setShowSortOptions] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'books'), async (snapshot) => {
-      const booksData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const booksData = snapshot.docs.map(doc => ({ 
+        id: doc.id, 
+        ...doc.data(),
+        date: doc.data().date?.toDate() || new Date()
+      }));
+      
       setBooks(booksData);
-  
-      // Get unique userIds
+      
       const userIds = [...new Set(booksData.map(book => book.userId))];
-  
-      // Fetch userInfo documents for those userIds
       const avatars = {};
+      
       for (const uid of userIds) {
         try {
           const userDoc = await getDoc(doc(db, 'userInfo', uid));
@@ -48,43 +54,50 @@ const BooksPage = () => {
           console.error(`Error fetching avatar for ${uid}:`, err);
         }
       }
-  
+      
       setUserAvatars(avatars);
     });
-  
+
     return () => unsubscribe();
   }, []);
-  
 
-    const addOrUpdateBook = async () => {
+  useEffect(() => {
+    let result = [...books];
+    
+    // Sorting logic
+    result.sort((a, b) => {
+      if (sortBy === 'date') {
+        return b.date - a.date;
+      }
+      return (b[sortBy] || '').localeCompare(a[sortBy] || '');
+    });
+    
+    setFilteredBooks(result);
+    setCurrentPage(1);
+  }, [books, sortBy]);
+
+  const addOrUpdateBook = async () => {
+    if (isSubmitting) return;
+  
     const { id, title, author, contact, description, imageUrl } = newBook;
-    if (!title || !author || !description || !imageUrl) {
-      alert('Будь ласка, заповніть всі поля');
+    if (!title || !imageUrl) {
+      alert('Title and image are required');
       return;
     }
   
+    setIsSubmitting(true);
     try {
       if (isEditing && id) {
-        // Update existing book
         await updateDoc(doc(db, 'books', id), {
           title,
           author,
           contact,
           description,
           imageUrl,
-          userPhotoURL: auth.currentUser.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`,
+          updatedAt: new Date()
         });
-  
-        // Update the book in the local state
-        setBooks((prevBooks) =>
-          prevBooks.map((book) =>
-            book.id === id
-              ? { ...book, title, author, contact, description, imageUrl }
-              : book
-          )
-        );
       } else {
-        const docRef = await addDoc(collection(db, 'books'), {
+        await addDoc(collection(db, 'books'), {
           title,
           author,
           contact,
@@ -92,21 +105,11 @@ const BooksPage = () => {
           imageUrl,
           userId: auth.currentUser.uid,
           userPhotoURL: auth.currentUser.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`,
+          createdAt: new Date(),
+          views: 0,
+          likes: 0,
+          comments: 0
         });
-  
-        setBooks((prevBooks) => [
-          ...prevBooks,
-          {
-            id: docRef.id,
-            title,
-            author,
-            contact,
-            description,
-            imageUrl,
-            userId: auth.currentUser.uid,
-            userPhotoURL: auth.currentUser.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`,
-          },
-        ]);
       }
   
       setModalVisible(false);
@@ -114,25 +117,27 @@ const BooksPage = () => {
       setIsEditing(false);
     } catch (err) {
       console.error('Firebase error:', err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
+  
 
   const handleEdit = (book) => {
     setNewBook({
-      id: book.id, // Ensure the ID is set
+      id: book.id,
       title: book.title,
       author: book.author,
       contact: book.contact,
       description: book.description,
-      imageUrl: book.imageUrl,
-      userPhotoURL: book.userPhotoURL, // Include user photo if needed
+      imageUrl: book.imageUrl
     });
     setIsEditing(true);
     setModalVisible(true);
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Ви впевнені, що хочете видалити цю книгу?')) {
+    if (window.confirm('Are you sure you want to delete this book?')) {
       try {
         await deleteDoc(doc(db, 'books', id));
       } catch (err) {
@@ -141,94 +146,172 @@ const BooksPage = () => {
     }
   };
 
+  const booksPerPage = 8;
+  const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+  const paginatedBooks = filteredBooks.slice(
+    (currentPage - 1) * booksPerPage,
+    currentPage * booksPerPage
+  );
+
+
+
   return (
     <div className="books-page">
-    <div className="container">
-      <p className="info">
-        <strong>Strangely and non natural seems a person, that exists without books</strong>
-        <br />
-        <span> ©️ Taras Shevchenko</span>
-      </p>
+      <div className="container">
+        <div className="header-section">
+          <p className="quote">
+            "Strangely and non natural seems a person, that exists without books"
+            <span> ©️ Taras Shevchenko</span>
+          </p>
+        </div>
 
-      <button className="add-btn" onClick={() => setModalVisible(true)}>+ Add book</button>
+        <div className="controls-container">
+          <button 
+            className="add-btn" 
+            onClick={() => setModalVisible(true)}
+          >
+            + Add Book
+          </button>
 
-      <div className="book-list">
-        {books.map(book => (
-          <div key={book.id || book.title} className="book">
-            <Link to={`/account/${book.userId}`} className="creator-link">
-              <img
-                src={
-                  userAvatars[book.userId]?.startsWith('http')
-                    ? userAvatars[book.userId]
-                    : `${process.env.PUBLIC_URL}${userAvatars[book.userId] || '/no_avatar.png'}`
-                }
-                alt="User Avatar"
-                className="creator-avatar"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`;
-                }}
-              />
-            </Link>
+          {/* {<div className="sort-toggle-container">
+            <button 
+              className="sort-toggle-button"
+              onClick={() => setShowSortOptions(!showSortOptions)}
+            >
+              Sort by: {sortBy}
+              <span className={`toggle-arrow ${showSortOptions ? 'open' : ''}`}>▼</span>
+            </button>
 
- 
-            <strong>{book.title} — {book.author}</strong>
-            <p>{book.description}</p>
-            <img src={`${process.env.PUBLIC_URL}${book.imageUrl}`} alt={book.title} className="book-image" />
-            {book.userId === auth.currentUser.uid && (
-              <div className="actions">
-                <button onClick={() => handleEdit(book)}>Edit</button>
-                <button className="danger" onClick={() => handleDelete(book.id)}>Delete</button>
+            {showSortOptions && (
+              <div className="sort-options-dropdown">
+                <button onClick={() => setSortBy('title')}>Title</button>
+                <button onClick={() => setSortBy('author')}>Author</button>
+                <button onClick={() => setSortBy('date')}>Date</button>
               </div>
             )}
-          </div>
-        ))}
-      </div>
-
-      {modalVisible && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>{isEditing ? 'Edit' : 'Add'} book </h3>
-            <input
-              placeholder="Назва книги"
-              value={newBook.title}
-              onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
-            />
-            <input
-              placeholder="Автор книги"
-              value={newBook.author}
-              onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
-            />
-            <input
-              placeholder="Контакт"
-              value={newBook.contact}
-              onChange={(e) => setNewBook({ ...newBook, contact: e.target.value })}
-            />
-            <textarea
-              placeholder="Опис"
-              value={newBook.description}
-              onChange={(e) => setNewBook({ ...newBook, description: e.target.value })}
-            />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  setNewBook({ ...newBook, imageUrl: reader.result });
-                };
-                reader.readAsDataURL(file);
-              }}
-            />
-            <button onClick={addOrUpdateBook}>
-              {isEditing ? 'Оновити книгу' : 'Додати книгу'}
-            </button>
-            <button onClick={() => setModalVisible(false)}>Скасувати</button>
-          </div>
+          </div>} */}
         </div>
-      )}
-    </div>
+
+        <div className="books-grid">
+          {paginatedBooks.map(book => (
+            <div key={book.id} className="book-card">
+              <Link to={`/books/${book.id}`} className="book-link">
+                <img 
+                  src={book.imageUrl} 
+                  alt={book.title} 
+                  className="book-cover"
+                />
+              </Link>
+
+              <div className="book-info">
+
+                <div className="book-meta">
+                  <Link to={`/account/${book.userId}`} className="creator-link">
+                    <img
+                      src={
+                        userAvatars[book.userId]?.startsWith('http')
+                          ? userAvatars[book.userId]
+                          : `${process.env.PUBLIC_URL}${userAvatars[book.userId] || '/no_avatar.png'}`
+                      }
+                      alt="User Avatar"
+                      className="creator-avatar"
+                    />
+                  </Link>
+                  <Link to={`/books/${book.id}`} className="book-title">
+                  {book.title}
+                </Link>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {filteredBooks.length === 0 && (
+          <div className="empty-state">
+            Loading...
+          </div>
+        )}
+
+        {filteredBooks.length > 0 && (
+          <div className="pagination">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span>Page {currentPage} of {totalPages}</span>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        )}
+
+        {modalVisible && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>{isEditing ? 'Edit Book' : 'Add New Book'}</h2>
+              
+                <label>Title*</label>
+              <div className="form-group">
+                <input
+                  value={newBook.title}
+                  onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
+                  placeholder="Book title"
+                />
+              </div>
+
+
+                <label>Description</label>
+              <div className="form-group">
+                <textarea
+                  value={newBook.description}
+                  onChange={(e) => setNewBook({ ...newBook, description: e.target.value })}
+                  placeholder="Book description"
+                />
+              </div>
+
+              <label>Cover Image*</label>
+              <div className="form-group">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setNewBook({ ...newBook, imageUrl: reader.result });
+                    };
+                    if (file) reader.readAsDataURL(file);
+                  }}
+                />
+                {newBook.imageUrl && (
+                  <img 
+                    src={newBook.imageUrl} 
+                    alt="Preview" 
+                    className="image-preview"
+                  />
+                )}
+              </div>
+
+              <div className="modal-actions">
+                <button onClick={addOrUpdateBook} disabled={isSubmitting}>
+                  {isSubmitting ? 'Processing...' : isEditing ? 'Update Book' : 'Add Book'}
+                </button>
+                <button 
+                  onClick={() => setModalVisible(false)}
+                  className="cancel-btn"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

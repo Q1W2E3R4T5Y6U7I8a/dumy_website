@@ -4,27 +4,19 @@ import './HelpPage.scss';
 const HelpPage = () => {
   return (
     <div className="help-page">
-      <h1>Help & Info</h1>
       <div className="help-content">
-        <section>
-          <h2>About DUMY</h2>
-          <p>
-            DUMY is a platform designed to connect people, share ideas, and have fun. Whether you're here to chat, play games, or share your thoughts, DUMY has something for everyone.
-          </p>
-        </section>
-        <section>
-          <h2>Features</h2>
-          <ul>
-            <li>Connect with friends and make new ones.</li>
-            <li>Share posts, music, and ideas.</li>
-            <li>Join public chats or send private messages.</li>
-            <li>Play games and explore applications.</li>
-          </ul>
-        </section>
         <section>
           <h2>Need Help?</h2>
           <p>
-            If you encounter any issues or have questions, feel free to reach out to our support team at <a href="mailto:support@dumy.com">support@dumy.com</a>.
+            If you encounter any issues or have questions, feel free to reach out by mail <b>maksym.karashevskyi@gmail.com</b>, instagram or telegram <b>@makarkarma</b>
+          </p>
+        </section>
+
+        <section>
+          <h2>Because I surely need, lol</h2>
+          <p>
+            This app is on stage of development, I would appreciate to hear your feedback. <br/>
+            Also if it reads somebody who is familiar with Kotlin/JS/React/Java or just REAAAALYyayAYAy LIKE THE PROJECT, u sd write as well, we search new nembers in our team!
           </p>
         </section>
       </div>

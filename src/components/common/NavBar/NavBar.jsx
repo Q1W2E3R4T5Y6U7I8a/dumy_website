@@ -16,19 +16,18 @@ const Navbar = () => {
       </div>
 
       <div className="navbar__center">
-        <Link to="/dumy" className="navbar__link">DUMY</Link>
-        <Link to="/books" className="navbar__link">BOOK_CROSS</Link>
-        <Link to="/duma" className="navbar__link">DUMA</Link>
+        <Link to="dumy" className="navbar__link">DUMY</Link>
+        <Link to="books" className="navbar__link">BOOK_CROSS</Link>
+        <Link to="duma" className="navbar__link">DUMA</Link>
       </div>
 
       <div className="navbar__right">
-        <Link to={`/account/${auth.currentUser?.uid}`} className="navbar__user-icon">
+        <Link to={`account/${auth.currentUser?.uid}`} className="navbar__user-icon">
         <img
-  src={`${process.env.PUBLIC_URL}${currentUser?.photoURL || '/no_avatar.png'}`}
-  alt="Profile"
-  className="navbar__profile-pic"
-/>
-
+          src={`${process.env.PUBLIC_URL}${currentUser?.photoURL || '/no_avatar.png'}`}
+          alt="Profile"
+          className="navbar__profile-pic"
+        />
         </Link>
       </div>
     </nav>

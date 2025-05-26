@@ -22,16 +22,17 @@ const DumyPage = () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'posts'));
         const postsData = [];
-        const categoriesSet = new Set();
-
+        const categoriesSet = new Set(['uncategorized']);
+  
         querySnapshot.forEach(doc => {
           const data = doc.data();
           const dateField = data.date instanceof Timestamp ? data.date.toDate().toLocaleDateString() : data.date;
-          
           if (data.category) {
             categoriesSet.add(data.category);
+          } else {
+            categoriesSet.add('uncategorized');
           }
-
+  
           postsData.push({
             id: doc.id,
             ...data,
@@ -47,15 +48,14 @@ const DumyPage = () => {
         });
 
         const categoriesArray = Array.from(categoriesSet);
-        setCategories(['uncategorized', ...categoriesArray]);
-        
+        setCategories(categoriesArray);
         const savedCategories = localStorage.getItem('selectedCategories');
         const initialSelected = {};
         
         categoriesArray.forEach(cat => {
-          initialSelected[cat] = savedCategories ? JSON.parse(savedCategories)[cat] !== false : true;
+          initialSelected[cat] = savedCategories ? 
+            JSON.parse(savedCategories)[cat] !== false : true;
         });
-        initialSelected['uncategorized'] = savedCategories ? JSON.parse(savedCategories)['uncategorized'] !== false : true;
         
         setSelectedCategories(initialSelected);
         setPosts(postsData);
@@ -64,7 +64,7 @@ const DumyPage = () => {
         console.error('Error fetching posts:', err);
       }
     };
-
+  
     fetchPosts();
   }, []);
 

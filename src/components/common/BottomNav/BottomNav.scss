@@ -119,3 +119,30 @@
 .bottomnav__music-container:hover .bottomnav__volume-slider {
   opacity: 1; // Affiche la barre de volume lorsque l'utilisateur survole le conteneur
 }
+
+@media (max-width: 600px) {
+  .bottomnav__center {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .bottomnav__link {
+    font-size: 0.85rem;
+    padding-top: 15px;
+  }
+
+  .bottomnav__music-container {
+    width: 100%;
+    justify-content: center;
+    padding-bottom: 12px;
+  }
+
+  .bottomnav__volume-slider {
+    position: static;
+    opacity: 1;
+    width: 80%;
+    margin-left: 8px;
+    transform: none;
+  }
+}

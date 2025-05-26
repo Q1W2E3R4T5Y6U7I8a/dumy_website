@@ -15,7 +15,7 @@ export const endingFlashcards = [
     description: { yes: "Restart!", no: "Restart..." },
     question: 'Without vision, humanity became stagnant. No progress was made as fear of failure prevented any ambitious endeavors.',
     color: { yes: 'white', no: 'black' },
-    music: require('../../../assets/music/ending/air_100.mp3'),
+    music: require('../../../assets/music/ending/air_0.mp3'),
   },
   {
     id: 'earth_100',
@@ -24,7 +24,7 @@ export const endingFlashcards = [
     description: { yes: "Restart!", no: "Restart..." },
     question: 'Total focus on stability led to rigidity. Innovation ceased, and societies collapsed under the weight of unchangeable tradition.',
     color: { yes: 'white', no: 'black' },
-    music: require('../../../assets/music/ending/air_100.mp3'),
+    music: require('../../../assets/music/ending/earth_100.mp3'),
   },
   {
     id: 'earth_0',
@@ -33,7 +33,7 @@ export const endingFlashcards = [
     description: { yes: "Restart!", no: "Restart..." },
     question: 'Lack of grounding caused chaos. With no roots, communities drifted aimlessly, unable to build lasting systems or trust.',
     color: { yes: 'white', no: 'black' },
-    music: require('../../../assets/music/ending/air_100.mp3'),
+    music: require('../../../assets/music/ending/earth_100.mp3'),
   },
   {
     id: 'fire_100',
@@ -60,7 +60,7 @@ export const endingFlashcards = [
     description: { yes: "Restart!", no: "Restart..." },
     description: 'Too much compassion led to indecision and collapse. Boundaries dissolved as emotions ruled over reason and structure.',
     color: { yes: 'white', no: 'black' },
-    music: require('../../../assets/music/ending/air_100.mp3'),
+    music: require('../../../assets/music/ending/water_100.mp3'),
   },
   {
     id: 'water_0',
@@ -69,6 +69,6 @@ export const endingFlashcards = [
     description: { yes: "Restart!", no: "Restart..." },
     question: 'Emotional neglect turned societies dry and isolating. Without empathy, relationships withered and collective strength faded.',
     color: { yes: 'white', no: 'black' },
-    music: require('../../../assets/music/ending/air_100.mp3'),
+    music: require('../../../assets/music/ending/water_100.mp3'),
   },  
 ];

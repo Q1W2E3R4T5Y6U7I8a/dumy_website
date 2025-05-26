@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider 
+ } from 'firebase/auth';
 import { auth } from '../../../firebase';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.scss';
@@ -48,6 +51,21 @@ const LoginPage = () => {
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      setError('');
+      setLoading(true);
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      navigate('/books');
+    } catch (err) {
+      console.error('Google sign-in error:', err);
+      setError('Failed to sign in with Google. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="login-container">
       <div className="login-card">
@@ -55,23 +73,25 @@ const LoginPage = () => {
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
+            <label></label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete="username"
+              placeholder="Enter your email"
             />
           </div>
           <div className="form-group">
-            <label>Password</label>
+            <label></label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               autoComplete="current-password"
+              placeholder="Enter your password"
             />
           </div>
           <button 
@@ -85,16 +105,37 @@ const LoginPage = () => {
                 Logging In...
               </>
             ) : 'Login'}
-          </button>
+          </button>  
         </form>
-        <p className="auth-footer">
-          Don't have an account?{' '}
-          <span className="link" onClick={() => navigate('/register')}>Register</span>
-        </p>
-        <p className="auth-footer">
-          Forgot password?{' '}
-          <span className="link" onClick={() => navigate('/reset-password')}>Reset it</span>
-        </p>
+
+        <div className="divider">
+          <span>or</span>
+        </div>
+        
+        <button 
+          className="google-signin-button"
+          onClick={signInWithGoogle}
+          disabled={loading}
+        >
+          <img 
+            src={`${process.env.PUBLIC_URL}/google_logo.png`}
+            alt="Google logo" 
+            className="google-logo"
+          />
+          Continue with Google
+        </button>
+        
+
+
+        <div className="auth-footer">
+          <p>Don't have an account?</p>
+          <button 
+            className="link-button"
+            onClick={() => navigate('/register')}
+          >
+            Register
+          </button>
+        </div>
       </div>
     </div>
   );

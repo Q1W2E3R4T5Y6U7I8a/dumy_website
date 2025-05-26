@@ -1,3 +1,5 @@
+1. Hide everth
+
 APP
 2. Rating system, very, maybe the most important
 3. Feed / News? Not just "Dumy"

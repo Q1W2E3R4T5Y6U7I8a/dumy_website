@@ -10,6 +10,9 @@ const FriendsPage = () => {
   const [users, setUsers] = useState([]);
   const [friends, setFriends] = useState([]);
   const navigate = useNavigate();
+  const navigateToProfile = (userId) => {
+    navigate(`/account/${userId}`);
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -86,14 +89,31 @@ const FriendsPage = () => {
 
   return (
     <div className="friends-page">
-      <h1>Friends</h1>
       <div className="friends-section">
         <div className="all-users">
           <h2>All Users</h2>
           <div className="users-list">
             {users.map((user) => (
               <div key={user.id} className="user-card">
-                <img src={user.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`} alt={user.displayName} />
+                <div 
+                      className="avatar-container"
+                      onClick={() => navigateToProfile(user.id)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                  <img 
+                      src={
+                        user.photoURL?.startsWith('http') 
+                          ? user.photoURL 
+                          : `${process.env.PUBLIC_URL}${user.photoURL || '/no_avatar.png'}`
+                      }
+                      alt={user.displayName || 'User avatar'}
+                      className="user-avatar"
+                      onError={(e) => {
+                        e.target.onerror = null; // Prevent infinite loop if fallback also fails
+                        e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`;
+                      }}
+                    />
+                </div>
                 <h3>{user.displayName}</h3>
                 <p>{user.aboutMe || 'No information provided.'}</p>
                 {friends.includes(user.id) ? (
@@ -101,7 +121,6 @@ const FriendsPage = () => {
                 ) : (
                   <button onClick={() => handleAddFriend(user.id)}>Add Friend</button>
                 )}
-                <button onClick={() => handleMessage(user.id)}>Message</button>
               </div>
             ))}
           </div>
@@ -114,11 +133,28 @@ const FriendsPage = () => {
                 .filter((user) => friends.includes(user.id))
                 .map((user) => (
                   <div key={user.id} className="user-card">
-                    <img src={user.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`} alt={user.displayName} />
+                   <div 
+                      className="avatar-container"
+                      onClick={() => navigateToProfile(user.id)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                    <img 
+                        src={
+                          user.photoURL?.startsWith('http') 
+                            ? user.photoURL 
+                            : `${process.env.PUBLIC_URL}${user.photoURL || '/no_avatar.png'}`
+                        }
+                        alt={user.displayName || 'User avatar'}
+                        className="user-avatar"
+                        onError={(e) => {
+                          e.target.onerror = null; // Prevent infinite loop if fallback also fails
+                          e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`;
+                        }}
+                      />
+                   </div>
                     <h3>{user.displayName}</h3>
-                    <p>{user.aboutMe || 'No information provided.'}</p>
+                    <p>{user.aboutMe || ''}</p>
                     <button onClick={() => handleRemoveFriend(user.id)}>Remove Friend</button>
-                    <button onClick={() => navigate(`/messages/${user.id}`)}>Message</button>
                   </div>
                 ))}
             </div>

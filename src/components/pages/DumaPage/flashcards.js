@@ -4,8 +4,8 @@ export const flashcards = [
       image: '/air_icon.png',
       question: "You feel the light of existence. Do you want to grasp it?\n\n\n*Swipe left/right",
       effects: {
-        yes: { air: 49, fire: 0, water: 0, earth: 0, time: 0.00000000000001, timeLabel: "Time before existence" },
-        no: { air: -100, fire: 0, water: 0, earth: 0, time: 0.00000000000001, timeLabel: "Time before existence" }
+        yes: { air: 49, fire: 0, water: 0, earth: 0, time: 0, timeLabel: "Time before existence" },
+        no: { air: -100, fire: 0, water: 0, earth: 0, time: 0, timeLabel: "Time before existence" }
       },
       description: { yes: "Yes", no: "No" },
       color: { yes: 'white', no: 'black' }
@@ -13,21 +13,21 @@ export const flashcards = [
     {
       id: 2,
       image: '/fire_icon.png',
-      question: "Though r u sure?! R u sure! U want to be or not!? U fucking want or not I am fucking asking you!!!",
+      question: "Though r u sure?!",
       effects: {
-        yes: { air: 0, fire: 49, water: 0, earth: 0, time: 0.00000000000001, timeLabel: "Time before existence" },
-        no: { air: 0, fire: -100, water: 0, earth: 0, time: 0.00000000000001, timeLabel: "Time before existence" }
+        yes: { air: 0, fire: 49, water: 0, earth: 0, time: 0, timeLabel: "Time before existence" },
+        no: { air: 0, fire: -100, water: 0, earth: 0, time: 0, timeLabel: "Time before existence" }
       },
-      description: { yes: "Yes, I want!", no: "Nope" },
+      description: { yes: "Yes!", no: "Nope" },
       color: { yes: 'red', no: 'black' }
     },
     {
       id: 3,
       image: '/earth_icon.png',
-      question: "Though it's going to be tough. U gotta handle everything. Create everything. Be responsible. Do what u don't like. Look deep down and ask if READY for that? Do you WANT that? Later you will undestand that those are 1 question",
+      question: "Though it's going to be tough. Do you WANT that? ",
       effects: {
-        yes: { air: 0, fire: 0, water: 0, earth: 49, time: 0.00000000000001, timeLabel: "Time before existence" },
-        no: { air: 0, fire: 0, water: 0, earth: -100, time: 0.00000000000001, timeLabel: "Time before existence" }
+        yes: { air: 0, fire: 0, water: 0, earth: 49, time: 0, timeLabel: "Time before existence" },
+        no: { air: 0, fire: 0, water: 0, earth: -100, time: 0, timeLabel: "Time before existence" }
       },
       description: { yes: "I will handle that. I want it", no: "Naaaah" },
       color: { yes: 'green', no: 'black' }
@@ -35,10 +35,10 @@ export const flashcards = [
     {
       id: 4,
       image: '/water_icon.png',
-      question: "Will you watch out for balance? It's gonna be really wonderfull journey, which will require constant changes, r u ready to accept that?",
+      question: "R u ready to accept chaos and constant changes?",
       effects: {
-        yes: { air: 0, fire: 0, water: 49, earth: 0, time: 0.00000000000001, timeLabel: "Time before existence" },
-        no: { air: 0, fire: 0, water: -100, earth: 0, time: 0.00000000000001, timeLabel: "Time before existence" }
+        yes: { air: 0, fire: 0, water: 49, earth: 0, time: 0, timeLabel: "Time before existence" },
+        no: { air: 0, fire: 0, water: -100, earth: 0, time: 0, timeLabel: "Time before existence" }
       },
       description: { yes: "Let the flow guide me, though I know nothing, I will be moving", no: "Naaaaah" },
       color: { yes: 'blue', no: 'black' }
@@ -48,8 +48,8 @@ export const flashcards = [
       image: '/universia.png',
       question: "Hi. I am Universia, who tf r u? Ohhhh, u r that one!? Ha, didn't think that I wd see smb like you! \n Hope u don't mind that u r dead? \n \n We are at the time before BigBang, before creation, so technically u r not even dead, to be dead u had to die, and to die u had to be alive before which is not about u. Maybe u wd rather not exist with me and stay here more, maybe forever, or do u wanna start? ",
       effects: {
-        yes: { air: 10, fire: 10, water: 10, earth: 10, time: 0.00000000000001, timeLabel: "Time before existence" },
-        no: { air: -10, fire: -10, water: -10, earth: -10, time: 0.00000000000001, timeLabel: "Time before existence" }
+        yes: { air: 10, fire: 10, water: 10, earth: 10, time: 0, timeLabel: "Time before existence" },
+        no: { air: -10, fire: -10, water: -10, earth: -10, time: 0, timeLabel: "Time before existence" }
       },
       description: { yes: "I am ready to go!", no: "Naaaah, I'd rather stay in emptiness" },
       color: { yes: 'white', no: 'black' }
@@ -70,8 +70,8 @@ export const flashcards = [
       image: '/universia.png',
       question: "Let there be light!",
       effects: {
-        yes: { air: 5, fire: 5, earth: -5, water: 0, time: 0.99999999999995, timeLabel: "Day" },
-        no: { air: -5, fire: -5, earth: 5, water: 0, time: 0.99999999999995, timeLabel: "Day" }
+        yes: { air: 5, fire: 5, earth: -5, water: 0, time: 1, timeLabel: "Day" },
+        no: { air: -5, fire: -5, earth: 5, water: 0, time: 1, timeLabel: "Day" }
       },
       description: { yes: "Even lighter!", no: "Though, not so bright, please?" },
       color: { yes: 'white', no: 'black' }
@@ -173,6 +173,75 @@ export const flashcards = [
         no: { air: 10, fire: 10, earth: -10, water: -10, time: 0, timeLabel: "Years, before civilization" }
       },
       description: { yes: "Scare hell out of them! Paul was really upset that didn't get the apple! Plus, in that way, humans will evolve and keep consiousness evolving", no: "Let them bond with nature, less fire, more peace and calm, they suffered enough, Universia" },
+      color: { yes: 'red', no: 'green' }
+    },
+    {
+      id: 17,
+      image: '/universia.png',
+      question: "NEXT EVENTS OF THE GAME ARE NOT WRITTEN YET",
+      effects: {
+        yes: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" },
+        no: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" }
+      },
+      description: { yes: "Ok...", no: "Ok..." },
+      color: { yes: 'red', no: 'green' }
+    },
+
+
+
+    {
+      id: 1000,
+      image: '/universia.png',
+      question: "NEXT EVENTS OF THE GAME ARE NOT WRITTEN YET",
+      effects: {
+        yes: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" },
+        no: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" }
+      },
+      description: { yes: "Ok...", no: "Ok..." },
+      color: { yes: 'red', no: 'green' }
+    },
+    {
+      id: 1001,
+      image: '/universia.png',
+      question: "NEXT EVENTS OF THE GAME ARE NOT WRITTEN YET",
+      effects: {
+        yes: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" },
+        no: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" }
+      },
+      description: { yes: "Ok...", no: "Ok..." },
+      color: { yes: 'red', no: 'green' }
+    },
+    {
+      id: 1002,
+      image: '/universia.png',
+      question: "NEXT EVENTS OF THE GAME ARE NOT WRITTEN YET",
+      effects: {
+        yes: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" },
+        no: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" }
+      },
+      description: { yes: "Ok...", no: "Ok..." },
+      color: { yes: 'red', no: 'green' }
+    },
+    {
+      id: 1003,
+      image: '/universia.png',
+      question: "NEXT EVENTS OF THE GAME ARE NOT WRITTEN YET",
+      effects: {
+        yes: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" },
+        no: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" }
+      },
+      description: { yes: "Ok...", no: "Ok..." },
+      color: { yes: 'red', no: 'green' }
+    },
+    {
+      id: 1004,
+      image: '/universia.png',
+      question: "THE GAME WILL GO FROM START. STATS WILL BE SAVED.",
+      effects: {
+        yes: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" },
+        no: { air: 0, fire: 0, earth: 0, water: 0, time: 0, timeLabel: "???" }
+      },
+      description: { yes: "Ok...", no: "Ok..." },
       color: { yes: 'red', no: 'green' }
     }
   ];

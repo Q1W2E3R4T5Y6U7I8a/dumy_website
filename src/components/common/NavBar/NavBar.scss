@@ -65,3 +65,16 @@
   object-fit: cover;  // Ensures the image fits within the circle
   padding-right: 20px;
 }
+
+
+@media (max-width: 768px) {
+  .navbar {
+    padding-left: 15px
+  }
+  .navbar__left {
+    display: none;
+  }
+  .navbar__right {
+    padding-right: 15px;
+  }
+}

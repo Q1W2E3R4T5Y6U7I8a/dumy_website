@@ -222,7 +222,7 @@ export default function PostDetails() {
         postId: id,
         text: newComment,
         date: new Date(),
-        author: auth.currentUser.displayName || 'Anonymous',
+        author: auth.currentUser.displayName,
         authorId: auth.currentUser.uid,
         authorPhotoURL: auth.currentUser.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`,
       };
@@ -303,7 +303,7 @@ export default function PostDetails() {
                 {userInfo.displayName || 'Unknown User'}
               </span>
             </Link>
-            <p className="about-me">{userInfo.aboutMe || 'No information provided.'}</p>
+            <p className="about-me">{userInfo.aboutMe || 'No information provided about this user.'}</p>
           </>
         )}
       </div>
@@ -362,11 +362,16 @@ export default function PostDetails() {
                 comments.map((comment) => (
                   <div key={comment.id} className="comment">
                     <Link to={`/account/${comment.authorId}`} className="comment-author">
-                      <img
-                        src={comment.authorPhotoURL}
-                        alt={comment.author}
-                        className="comment-avatar"
-                      />
+                    <img
+                      src={
+                        userInfo.photoURL?.startsWith('http')
+                          ? userInfo.photoURL
+                          : `${process.env.PUBLIC_URL}${userInfo.photoURL || '/no_avatar.png'}`
+                      }
+                      alt={userInfo.displayName || 'Unknown User'}
+                      className="comment-avatar"
+                      onError={(e) => (e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`)}
+                    />
                       <span>{comment.author}</span>
                     </Link>
                     <p className="comment-text">{comment.text}</p>

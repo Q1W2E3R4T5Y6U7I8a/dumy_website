@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import './DumaPage.scss';
 import { flashcards } from './flashcards.js';
 import { endingFlashcards } from './endingFlashcards.js';
-import { BackgroundMusicContext } from '../../../context/BackgroundMusic.js';
+import { AudioManagerContext } from '../../../context/AudioManager.js';
 
 const elementIcons = {
   air: '/air_icon.png',
@@ -21,7 +21,7 @@ const initialElements = {
 const swipeSound = new Audio(`${process.env.PUBLIC_URL}/card_swipe.mp3`);
 
 export default function DumaPage() {
-  const { playTrack, stopAllMusic } = useContext(BackgroundMusicContext);
+  const { playTrack, stopAllMusic } = useContext(AudioManagerContext);
   const [elements, setElements] = useState(initialElements);
   const [days, setDays] = useState(0);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);

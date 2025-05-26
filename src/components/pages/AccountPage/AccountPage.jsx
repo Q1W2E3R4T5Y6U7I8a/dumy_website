@@ -15,6 +15,7 @@ const AccountPage = () => {
   const [userBooks, setUserBooks] = useState([]);
   const [userPosts, setUserPosts] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isCurrentUserProfile, setIsCurrentUserProfile] = useState(false);
   const avatarOptions = [
     `${process.env.PUBLIC_URL}/avatar_1.png`,
     `${process.env.PUBLIC_URL}/avatar_2.png`,
@@ -25,10 +26,13 @@ const AccountPage = () => {
     `${process.env.PUBLIC_URL}/avatar_7.png`,
     `${process.env.PUBLIC_URL}/avatar_8.png`,
     `${process.env.PUBLIC_URL}/avatar_9.png`,
+    `${process.env.PUBLIC_URL}/avatar_10.png`,
+    `${process.env.PUBLIC_URL}/avatar_11.png`,
+    `${process.env.PUBLIC_URL}/avatar_12.png`,
   ];
   const selectionOptions = {
     religion: ['Christianity', 'Islam', 'Hinduism', 'Buddhism', 'Judaism', 'Atheism', 'Other'],
-    politicalViews: ['Liberal', 'Conservative', 'Moderate', 'Socialist', 'Libertarian', 'Other'],
+    politicalViews: ['Liberal', 'Conservative', 'Moderate', 'Socialist', 'Cosmopolitan', 'Libertarian', 'Other'],
     personalPriority: ['Family', 'Career', 'Health', 'Wealth', 'Spirituality', 'Relationships'],
     importantInOthers: ['Honesty', 'Intelligence', 'Kindness', 'Humor', 'Ambition', 'Loyalty'],
     viewsOnSmoking: ['Never', 'Occasionally', 'Socially', 'Regularly', 'Against it'],
@@ -60,60 +64,96 @@ const AccountPage = () => {
     viewsOnAlcohol: '',
     inspiredBy: '',
   };
-  
+
   const [userInfo, setUserInfo] = useState(initialUserInfo);
   const [loading, setLoading] = useState(true);
+  const [profileOwnerInfo, setProfileOwnerInfo] = useState({ displayName: 'User', photoURL: '/no_avatar.png' });
+
+  useEffect(() => {
+    // Check if this is the current user's profile
+    setIsCurrentUserProfile(currentUser && id === currentUser.uid);
+  }, [id, currentUser]);
 
   useEffect(() => {
     const fetchFriends = async () => {
-      const userRef = doc(db, 'userInfo', auth.currentUser.uid);
-      const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
-        const friendsIds = userDoc.data().friends || [];
-        const friendsData = await Promise.all(
-          friendsIds.map(async (friendId) => {
-            const friendRef = doc(db, 'userInfo', friendId);
-            const friendDoc = await getDoc(friendRef);
-            return friendDoc.exists() ? { id: friendId, ...friendDoc.data() } : null;
-          })
-        );
-        setFriends(friendsData.filter((friend) => friend !== null));
+      if (!id) return;
+
+      try {
+        const userRef = doc(db, 'userInfo', id);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          const friendsIds = userDoc.data().friends || [];
+          const friendsData = await Promise.all(
+            friendsIds.map(async (friendId) => {
+              const friendRef = doc(db, 'userInfo', friendId);
+              const friendDoc = await getDoc(friendRef);
+              return friendDoc.exists() ? { id: friendId, ...friendDoc.data() } : null;
+            })
+          );
+          setFriends(friendsData.filter((friend) => friend !== null));
+        }
+      } catch (error) {
+        console.error('Error fetching friends:', error);
       }
     };
 
     fetchFriends();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     const loadUserData = async () => {
-      if (!currentUser) return;
+      if (!id) return;
+
       setLoading(true);
       try {
-        const userRef = doc(db, "userInfo", currentUser.uid);
+        // Load the profile data for the user specified in the URL (id)
+        const userRef = doc(db, "userInfo", id);
         const docSnap = await getDoc(userRef);
-        const q = query(collection(db, 'books'), where('userId', '==', currentUser.uid));
-        const querySnapshot = await getDocs(q);
-        const books = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        const postsQuery = query(collection(db, 'posts'), where('userId', '==', currentUser.uid));
-        const postsSnapshot = await getDocs(postsQuery);
-        const posts = postsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        const firestoreData = docSnap.exists() ? docSnap.data() : {};
-        const mergedData = {
-          ...initialUserInfo,
-          ...firestoreData,
-          email: currentUser.email,
-          displayName: currentUser.displayName || '',
-          photoURL: currentUser.photoURL || '/no_avatar.png'
-        };
-        Object.keys(mergedData).forEach(key => {
-          if (mergedData[key] === undefined) {
-            mergedData[key] = '';
-          }
-        });
-        
-        setUserInfo(mergedData);
-        setUserBooks(books);
-        setUserPosts(posts);
+
+        if (docSnap.exists()) {
+          const firestoreData = docSnap.data();
+          setProfileOwnerInfo({
+            displayName: firestoreData.displayName || 'User',
+            photoURL: firestoreData.photoURL || '/no_avatar.png',
+          });
+
+          // Load books for this user
+          const q = query(collection(db, 'books'), where('userId', '==', id));
+          const querySnapshot = await getDocs(q);
+          const books = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+          // Load posts for this user
+          const postsQuery = query(collection(db, 'posts'), where('userId', '==', id));
+          const postsSnapshot = await getDocs(postsQuery);
+          const posts = postsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+          const authData = isCurrentUserProfile ? {
+            email: currentUser.email,
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL || '/no_avatar.png'
+          } : {};
+
+          const mergedData = {
+            ...initialUserInfo,
+            ...firestoreData,
+            ...authData
+          };
+
+          Object.keys(mergedData).forEach(key => {
+            if (mergedData[key] === undefined) {
+              mergedData[key] = '';
+            }
+          });
+
+          setUserInfo(mergedData);
+          setUserBooks(books);
+          setUserPosts(posts);
+        } else {
+          setProfileOwnerInfo({ displayName: 'User', photoURL: '/no_avatar.png' });
+          setUserInfo(initialUserInfo);
+          setUserBooks([]);
+          setUserPosts([]);
+        }
       } catch (error) {
         console.error("Error loading user data:", error);
       } finally {
@@ -122,26 +162,28 @@ const AccountPage = () => {
     };
 
     loadUserData();
-  }, [id]);
+  }, [id, isCurrentUserProfile, currentUser]);
 
   const handleAvatarSelect = async (avatarUrl) => {
     try {
-      // Extract just the filename part
+      if (!isCurrentUserProfile) return;
+
       const relativeAvatarUrl = avatarUrl.replace(`${process.env.PUBLIC_URL}`, '');
-      
-      await updateProfile(auth.currentUser, { 
-        photoURL: relativeAvatarUrl 
+
+      await updateProfile(auth.currentUser, {
+        photoURL: relativeAvatarUrl
       });
-      
+
       const userRef = doc(db, 'userInfo', auth.currentUser.uid);
-      await setDoc(userRef, { 
-        photoURL: relativeAvatarUrl 
+      await setDoc(userRef, {
+        photoURL: relativeAvatarUrl
       }, { merge: true });
-      
-      setUserInfo(prev => ({ 
-        ...prev, 
-        photoURL: relativeAvatarUrl 
+
+      setUserInfo(prev => ({
+        ...prev,
+        photoURL: relativeAvatarUrl
       }));
+      setProfileOwnerInfo(prev => ({ ...prev, photoURL: relativeAvatarUrl }));
     } catch (error) {
       console.error('Error updating avatar:', error);
       alert('Failed to update avatar.');
@@ -150,10 +192,13 @@ const AccountPage = () => {
 
   const handleSaveProfile = async () => {
     try {
+      if (!isCurrentUserProfile) return;
+
       const userRef = doc(db, 'userInfo', currentUser.uid);
-      await setDoc(userRef, userInfo, { merge: true }); 
+      await setDoc(userRef, userInfo, { merge: true });
       alert('Profile updated successfully!');
-      setIsEditing(false); 
+      setIsEditing(false);
+      setProfileOwnerInfo({ ...profileOwnerInfo, displayName: userInfo.displayName, photoURL: userInfo.photoURL });
     } catch (error) {
       console.error('Error saving profile:', error);
       alert('Failed to save profile. Please try again.');
@@ -161,6 +206,8 @@ const AccountPage = () => {
   };
 
   const handleInputChange = (e) => {
+    if (!isCurrentUserProfile) return;
+
     const { name, value } = e.target;
     setUserInfo(prev => ({ ...prev, [name]: value }));
   };
@@ -179,11 +226,19 @@ const AccountPage = () => {
       <div className="profile-section">
         <div className="profile-card">
           <div className="profile-header">
-          <img
-            src={`${process.env.PUBLIC_URL}${userInfo.photoURL}`}
-            alt="Profile"
-            className="current-avatar"
-          />
+            <img
+              src={
+                profileOwnerInfo.photoURL?.startsWith('http')
+                  ? profileOwnerInfo.photoURL
+                  : `${process.env.PUBLIC_URL}${profileOwnerInfo.photoURL || '/no_avatar.png'}`
+              }
+              alt="Profile"
+              className="current-avatar"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`;
+              }}
+            />
             {isEditing ? (
               <div className="profile-name">
                 <input
@@ -196,97 +251,79 @@ const AccountPage = () => {
                 />
               </div>
             ) : (
-              <h2 className="profile-name">{userInfo.displayName}</h2>
+              <h2 className="profile-name">{profileOwnerInfo.displayName}</h2>
             )}
           </div>
 
-          {isEditing && (
+          {isEditing && isCurrentUserProfile && (
             <div className="avatar-selection">
               <h3>Choose Your Avatar</h3>
               <div className="avatar-grid">
                 {avatarOptions.map((avatar, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className={`avatar-option ${userInfo.photoURL === avatar.replace(`${process.env.PUBLIC_URL}`, '') ? 'selected' : ''}`}
                     onClick={() => handleAvatarSelect(avatar)}
                   >
                     <img src={avatar} alt={`Avatar ${index + 1}`} />
                   </div>
-                ))} 
+                ))}
               </div>
             </div>
           )}
 
-          {currentUser && (
+          {isCurrentUserProfile && (
             <>
               <button onClick={handleLogout} className="logout-btn">Log Out</button>
-              <button 
-              onClick={isEditing ? handleSaveProfile : () => setIsEditing(true)} 
-              className={`edit-profile-btn ${isEditing ? 'save' : ''}`}
-            >
-              {isEditing ? 'Save' : 'Edit Profile'}
-            </button>
+              <button
+                onClick={isEditing ? handleSaveProfile : () => setIsEditing(true)}
+                className={`edit-profile-btn ${isEditing ? 'save' : ''}`}
+              >
+                {isEditing ? 'Save' : 'Edit Profile'}
+              </button>
             </>
           )}
 
-        <div className="friends-block">
-        <h3>Friends ({friends.length})</h3>
-          <div className="friends-list">
-            {friends.length > 0 ? (
-              friends.map((friend) => (
-                <div key={friend.id} className="friend-card">
-                  <img src={friend.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`} alt={friend.displayName} />
-                  <Link to={`/account/${friend.id}`}>{friend.displayName}</Link>
-                </div>
-              ))
-            ) : (
-              <p>No friends yet.</p>
-            )}
-        </div>
-      </div>
+          <div className="friends-block">
+            <h3>Friends ({friends.length})</h3>
+            <div className="friends-list">
+              {friends.length > 0 ? (
+                friends.map((friend) => (
+                  <div key={friend.id} className="friend-card">
+                    <img
+                      src={
+                        friend.photoURL?.startsWith('http')
+                          ? friend.photoURL
+                          : `${process.env.PUBLIC_URL}${friend.photoURL || '/no_avatar.png'}`
+                      }
+                      alt={friend.displayName}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`;
+                      }}
+                    />
+                    <Link to={`/account/${friend.id}`}>{friend.displayName}</Link>
+                  </div>
+                ))
+              ) : (
+                <p>No friends yet.</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="content-section">
-        <div className="user-posts">
-        <h3>Your Posts</h3>
-          <div className="posts-grid">
-            {userPosts.length > 0 ? (
-              userPosts.map((post) => (
-                <Post key={post.id} post={post} />
-              ))
-            ) : (
-              <p>No posts yet</p>
-            )}
-          </div>
-        </div>
 
-        <div className="user-books">
-          <h3>Your Books</h3>
-          <div className="book-list">
-            {userBooks.map((book, index) => (
-              <div key={book.id || index} className="book-card"><img src={`${process.env.PUBLIC_URL}${book.imageUrl}`} alt={book.title} />
-                <div className="book-cover">
-                  <img src={`${process.env.PUBLIC_URL}${book.imageUrl}`} alt={book.title} />
-                </div>
-                <div className="book-details">
-                  <h4>{book.title}</h4>
-                  <p className="author">{book.author}</p>
-                  <p className="description">{book.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
         <div className="profile-info-section">
           <div className="basic-info">
-            <h3>Basic Information</h3>
+            <h3>User's info:</h3>
             <div className="form-grid">
               {['hometown', 'work', 'education', 'mobile', 'activities', 'interests'].map(field => (
                 <div className="form-group" key={field}>
                   <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
-                  {isEditing ? (
+                  {isEditing && isCurrentUserProfile ? (
                     <input
                       type="text"
                       name={field}
@@ -303,12 +340,12 @@ const AccountPage = () => {
           </div>
 
           <div className="favorites-section">
-            <h3>Favorites</h3>
+            <h3></h3>
             <div className="form-grid">
               {['favoriteMusic', 'favoriteMovies', 'favoriteTVShow', 'favoriteBooks', 'favoriteGames'].map(field => (
                 <div className="form-group" key={field}>
                   <label>{field.replace('favorite', 'Favorite ').replace(/([A-Z])/g, ' $1')}</label>
-                  {isEditing ? (
+                  {isEditing && isCurrentUserProfile ? (
                     <input
                       type="text"
                       name={field}
@@ -328,7 +365,7 @@ const AccountPage = () => {
             <div className="rich-text-fields">
               <div className="form-group">
                 <label>Favorite Quote</label>
-                {isEditing ? (
+                {isEditing && isCurrentUserProfile ? (
                   <textarea
                     name="favoriteQuote"
                     value={userInfo.favoriteQuote}
@@ -339,10 +376,10 @@ const AccountPage = () => {
                   <div className="info-text">{userInfo.favoriteQuote || 'Not specified'}</div>
                 )}
               </div>
-              
+
               <div className="form-group">
                 <label>About Me</label>
-                {isEditing ? (
+                {isEditing && isCurrentUserProfile ? (
                   <textarea
                     name="aboutMe"
                     value={userInfo.aboutMe}
@@ -354,12 +391,12 @@ const AccountPage = () => {
                 )}
               </div>
             </div>
-            
+
             <div className="selection-fields">
               {Object.keys(selectionOptions).map((field) => (
                 <div className="form-group" key={field}>
                   <label>{field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</label>
-                  {isEditing ? (
+                  {isEditing && isCurrentUserProfile ? (
                     <select
                       name={field}
                       value={userInfo[field]}
@@ -376,10 +413,10 @@ const AccountPage = () => {
                   )}
                 </div>
               ))}
-              
+
               <div className="form-group">
                 <label>Inspired By</label>
-                {isEditing ? (
+                {isEditing && isCurrentUserProfile ? (
                   <input
                     type="text"
                     name="inspiredBy"
@@ -392,7 +429,50 @@ const AccountPage = () => {
                 )}
               </div>
             </div>
-          </div>      
+          </div>
+        </div>
+        <div className="user-posts">
+
+          <h3>{isCurrentUserProfile ? 'Your Posts' : `${profileOwnerInfo.displayName}'s posts`}</h3>
+          <div className="posts-grid">
+            {userPosts.length > 0 ? (
+              userPosts.map((post) => (
+                <Post key={post.id} post={post} />
+              ))
+            ) : (
+              <p>No posts yet</p>
+            )}
+          </div>
+        </div>
+
+        <div className="user-books">
+          <h3>{isCurrentUserProfile ? 'Your Books' : `${profileOwnerInfo.displayName}'s books`}</h3>
+          <div className="book-list">
+            {userBooks.length > 0 ? (
+              userBooks.map((book, index) => (
+                <div key={book.id || index} className="book-card">
+                  <img
+                    src={
+                      book.imageUrl
+                    }
+                    style={{ maxWidth: '100px', maxHeight: '100px', objectFit: 'contain' }}
+                    alt={book.title}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = `${process.env.PUBLIC_URL}/no_cover.png`;
+                    }}
+                  />
+                  <div className="book-details">
+                    <Link to={`/books/${book.id}`} className="book-link">
+                      {book.title}
+                    </Link>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No books yet</p>
+            )}
+          </div>
         </div>
       </div>
     </div>

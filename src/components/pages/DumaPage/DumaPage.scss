@@ -199,3 +199,23 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .duma-container > * {
+    display: none; /* Hide all children inside container */
+  }
+
+  /* Show only the message */
+  .duma-container::before {
+    content: "The game can be played only on the desktop version for the moment.";
+    display: block;
+    color: white;
+    font-size: 1.2em;
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

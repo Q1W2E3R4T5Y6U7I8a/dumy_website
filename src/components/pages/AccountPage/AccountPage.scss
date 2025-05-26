@@ -182,7 +182,7 @@
       h3 {
         font-size: 1.5rem;
         margin-bottom: 20px;
-        color: white;
+
         font-weight: 600;
       }
 
@@ -491,5 +491,67 @@
     background: darken($blue-main, 10%);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(66, 133, 244, 0.2);
+  }
+}
+
+
+.plus-icon {
+  font-size: 2.5rem;
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+}
+
+.book-link {
+  font-size: 15px;
+  display: inline-block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #fff; /* Or any vibrant color you prefer */
+  background-color: $blue-main; /* Hot Pink - feel free to change */
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 2px solid transparent;
+
+  &:hover {
+    background-color: $yellow-main; /* Deep Pink - darker shade on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    border-color: #fff; /* Add a subtle border on hover */
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #007bff; /* A focus indicator color */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Extra touches for added "fineness" */
+  &.shiny {
+    background: linear-gradient(135deg, #ff69b4 0%, #ffdab9 50%, #ff69b4 100%);
+    background-size: 200% 200%;
+    animation: shine 2s ease infinite alternate;
+  }
+
+  &.glowing {
+    box-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff69b4;
+  }
+
+  &.bold-text {
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  /* Keyframes for the shiny effect */
+  @keyframes shine {
+    to {
+      background-position: 200% 0;
+    }
   }
 }
