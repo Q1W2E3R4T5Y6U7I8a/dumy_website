@@ -4,7 +4,7 @@ APP
 2. Rating system, very, maybe the most important
 3. Feed / News? Not just "Dumy"
 4. Make page to reload when u leave comment, so that it wd be reflected and seen, same for like or equivalent, also with like problem that u can like many times, so make whole new page with showing who exactly liked and make being able to put only 1 at time
-
+5. Make the payment system as for GoClean, make a charity page or smth
 
 DUMA
 1. Make not selectable text
