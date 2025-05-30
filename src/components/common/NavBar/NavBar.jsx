@@ -11,7 +11,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar__left">
         <Link to="/" className="navbar__logo">
-          <img src={`${process.env.PUBLIC_URL}/DUMY_logo.png`} alt="DUMY Logo" className="navbar__logo-image" />
+          <img src={`/DUMY_logo.png`} alt="DUMY Logo" className="navbar__logo-image" />
         </Link>
       </div>
 
@@ -24,7 +24,7 @@ const Navbar = () => {
       <div className="navbar__right">
         <Link to={`account/${auth.currentUser?.uid}`} className="navbar__user-icon">
         <img
-          src={`${process.env.PUBLIC_URL}${currentUser?.photoURL || '/no_avatar.png'}`}
+          src={`${currentUser?.photoURL || '/no_avatar.png'}`}
           alt="Profile"
           className="navbar__profile-pic"
         />

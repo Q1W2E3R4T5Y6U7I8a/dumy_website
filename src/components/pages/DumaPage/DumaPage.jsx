@@ -3,6 +3,7 @@ import './DumaPage.scss';
 import { flashcards } from './flashcards.js';
 import { endingFlashcards } from './endingFlashcards.js';
 import { AudioManagerContext } from '../../../context/AudioManager.js';
+import { useNavigate } from 'react-router-dom';
 
 const elementIcons = {
   air: '/air_icon.png',
@@ -18,9 +19,13 @@ const initialElements = {
   water: 1
 };
 
-const swipeSound = new Audio(`${process.env.PUBLIC_URL}/card_swipe.mp3`);
+const swipeSound = new Audio(`/card_swipe.mp3`);
 
 export default function DumaPage() {
+  const [showEditor, setShowEditor] = useState(false);
+  const [editorValue, setEditorValue] = useState('');
+  const [editorError, setEditorError] = useState('');
+
   const { playMusic, stopAllMusic } = useContext(AudioManagerContext);
   const [elements, setElements] = useState(initialElements);
   const [days, setDays] = useState(0);
@@ -79,6 +84,38 @@ useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isAnimating]);
+
+
+  // Open editor with current flashcards
+  const openEditor = () => {
+    setEditorValue(JSON.stringify(cardStack, null, 2));
+    setShowEditor(true);
+    setEditorError('');
+  };
+
+  // Save changes from editor
+  const saveEditor = () => {
+    try {
+      const parsed = JSON.parse(editorValue);
+      setCardStack(parsed);
+      localStorage.setItem('duma_flashcards', JSON.stringify(parsed));
+      setShowEditor(false);
+      setEditorError('');
+    } catch (e) {
+      setEditorError('Invalid JSON!');
+    }
+  };
+
+  // Download as file
+  const downloadFile = () => {
+    const blob = new Blob([editorValue], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'flashcards.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   const handleSwipeStart = () => {
     setIsAnimating(true);
@@ -239,7 +276,7 @@ const advanceCard = () => {
     return (
       <div className="element-circle">
         <div className="element-fill" style={{ height: `${level}%` }}>
-          <img src={`${process.env.PUBLIC_URL}${elementIcons[element]}`} alt={element} />
+          <img src={`${elementIcons[element]}`} alt={element} />
         </div>
       </div>
     );
@@ -251,6 +288,48 @@ const advanceCard = () => {
 
   return (
     <div className="duma-container">
+      <button
+        style={{
+          position: 'absolute',
+          top: 20,
+          right: 20,
+          zIndex: 1000,
+          background: '#222',
+          color: 'white',
+          borderRadius: '8px',
+          padding: '8px 16px',
+          border: 'none',
+          cursor: 'pointer'
+        }}
+        onClick={openEditor}
+      >
+        Manage Flashcards
+      </button>
+
+      {showEditor && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+          background: 'rgba(0,0,0,0.7)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>
+          <div style={{
+            background: '#222', padding: 20, borderRadius: 10, width: '90vw', maxWidth: 600, boxShadow: '0 0 20px #000'
+          }}>
+            <h3 style={{color: 'white'}}>Edit Flashcards JSON</h3>
+            <textarea
+              value={editorValue}
+              onChange={e => setEditorValue(e.target.value)}
+              style={{ width: '100%', height: 300, background: '#111', color: '#fff', borderRadius: 6, padding: 8, fontFamily: 'monospace', fontSize: 14 }}
+            />
+            {editorError && <div style={{color: 'red', margin: '8px 0'}}>{editorError}</div>}
+            <div style={{display: 'flex', gap: 8, marginTop: 10}}>
+              <button onClick={saveEditor} style={{padding: '6px 16px'}}>Save</button>
+              <button onClick={downloadFile} style={{padding: '6px 16px'}}>Download</button>
+              <button onClick={() => setShowEditor(false)} style={{padding: '6px 16px'}}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="status-bar">
         <ElementDisplay element="air" />
         <ElementDisplay element="earth" />
@@ -274,7 +353,7 @@ const advanceCard = () => {
           }}
         >
           <div className="image-container">
-          <img src={`${process.env.PUBLIC_URL}${nextCard.image}`} alt="Next Card" className="character-image" />
+          <img src={`${nextCard.image}`} alt="Next Card" className="character-image" />
           </div>
           <div className="card-content">
             {nextCard.title && <h2>{nextCard.title}</h2>}
@@ -302,7 +381,7 @@ const advanceCard = () => {
           }}
         >
           <div className="image-container">
-          <img src={`${process.env.PUBLIC_URL}${currentCard.image}`} alt="Current Card" className="character-image" />
+          <img src={`${currentCard.image}`} alt="Current Card" className="character-image" />
           </div>
           <div className="card-content">
             {currentCard.title && <h2>{currentCard.title}</h2>}
