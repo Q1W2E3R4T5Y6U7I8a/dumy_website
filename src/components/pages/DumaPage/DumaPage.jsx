@@ -18,7 +18,7 @@ const initialElements = {
   water: 1
 };
 
-const swipeSound = new Audio(`${process.env.PUBLIC_URL}/card_swipe.mp3`);
+const swipeSound = new Audio(`/card_swipe.mp3`);
 
 export default function DumaPage() {
   const { playMusic, stopAllMusic } = useContext(AudioManagerContext);
@@ -239,7 +239,7 @@ const advanceCard = () => {
     return (
       <div className="element-circle">
         <div className="element-fill" style={{ height: `${level}%` }}>
-          <img src={`${process.env.PUBLIC_URL}${elementIcons[element]}`} alt={element} />
+          <img src={`${elementIcons[element]}`} alt={element} />
         </div>
       </div>
     );
@@ -274,7 +274,7 @@ const advanceCard = () => {
           }}
         >
           <div className="image-container">
-          <img src={`${process.env.PUBLIC_URL}${nextCard.image}`} alt="Next Card" className="character-image" />
+          <img src={`${nextCard.image}`} alt="Next Card" className="character-image" />
           </div>
           <div className="card-content">
             {nextCard.title && <h2>{nextCard.title}</h2>}
@@ -302,7 +302,7 @@ const advanceCard = () => {
           }}
         >
           <div className="image-container">
-          <img src={`${process.env.PUBLIC_URL}${currentCard.image}`} alt="Current Card" className="character-image" />
+          <img src={`${currentCard.image}`} alt="Current Card" className="character-image" />
           </div>
           <div className="card-content">
             {currentCard.title && <h2>{currentCard.title}</h2>}

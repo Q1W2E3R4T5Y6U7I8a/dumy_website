@@ -104,13 +104,13 @@ const FriendsPage = () => {
                       src={
                         user.photoURL?.startsWith('http') 
                           ? user.photoURL 
-                          : `${process.env.PUBLIC_URL}${user.photoURL || '/no_avatar.png'}`
+                          : `${user.photoURL || '/no_avatar.png'}`
                       }
                       alt={user.displayName || 'User avatar'}
                       className="user-avatar"
                       onError={(e) => {
                         e.target.onerror = null; // Prevent infinite loop if fallback also fails
-                        e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`;
+                        e.target.src = `/no_avatar.png`;
                       }}
                     />
                 </div>
@@ -142,13 +142,13 @@ const FriendsPage = () => {
                         src={
                           user.photoURL?.startsWith('http') 
                             ? user.photoURL 
-                            : `${process.env.PUBLIC_URL}${user.photoURL || '/no_avatar.png'}`
+                            : `${user.photoURL || '/no_avatar.png'}`
                         }
                         alt={user.displayName || 'User avatar'}
                         className="user-avatar"
                         onError={(e) => {
                           e.target.onerror = null; // Prevent infinite loop if fallback also fails
-                          e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`;
+                          e.target.src = `/no_avatar.png`;
                         }}
                       />
                    </div>

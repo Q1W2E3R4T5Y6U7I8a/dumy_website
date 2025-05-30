@@ -150,7 +150,7 @@ const BookDetails = () => {
         displayName = userDoc.exists() ? userDoc.data().displayName || 'Anonymous' : 'Anonymous';
       }
   
-      const authorPhotoURL = user.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`;
+      const authorPhotoURL = user.photoURL || `/no_avatar.png`;
   
       const commentRef = await addDoc(collection(db, 'commentsBooks'), {
         bookId: id,
@@ -233,7 +233,7 @@ const BookDetails = () => {
             src={
               userInfo?.photoURL?.startsWith('http')
                 ? userInfo.photoURL
-                : `${process.env.PUBLIC_URL}${userInfo?.photoURL || '/no_avatar.png'}`
+                : `${userInfo?.photoURL || '/no_avatar.png'}`
             }
             alt={userInfo?.displayName || 'Unknown User'}
             className="creator-avatar"
@@ -296,7 +296,7 @@ const BookDetails = () => {
                   src={
                     comment.authorPhotoURL?.startsWith('http')
                       ? comment.authorPhotoURL
-                      : `${process.env.PUBLIC_URL}${comment.authorPhotoURL || '/no_avatar.png'}`
+                      : `${comment.authorPhotoURL || '/no_avatar.png'}`
                   }
                   alt={comment.author || 'User'}
                   className="comment-avatar"

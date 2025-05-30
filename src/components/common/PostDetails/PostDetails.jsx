@@ -224,7 +224,7 @@ export default function PostDetails() {
         date: new Date(),
         author: auth.currentUser.displayName,
         authorId: auth.currentUser.uid,
-        authorPhotoURL: auth.currentUser.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`,
+        authorPhotoURL: auth.currentUser.photoURL || `/no_avatar.png`,
       };
   
       const commentRef = await addDoc(commentsRef, newCommentData);
@@ -291,11 +291,11 @@ export default function PostDetails() {
               src={
                 userInfo.photoURL?.startsWith('http')
                   ? userInfo.photoURL
-                  : `${process.env.PUBLIC_URL}${userInfo.photoURL || '/no_avatar.png'}`
+                  : `${userInfo.photoURL || '/no_avatar.png'}`
               }
               alt={userInfo.displayName || 'Unknown User'}
               className="creator-avatar"
-              onError={(e) => (e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`)}
+              onError={(e) => (e.target.src = `/no_avatar.png`)}
             />
 
               
@@ -314,7 +314,7 @@ export default function PostDetails() {
           className={`like-button ${isLiked ? 'active' : ''}`}
         >
           <img
-            src={isLiked ? `${process.env.PUBLIC_URL}/heart_icon_active.png` : `${process.env.PUBLIC_URL}/heart_icon.png`}
+            src={isLiked ? `/heart_icon_active.png` : `/heart_icon.png`}
             alt="Like"
           />
           <span>{post.likes || 0}</span>
@@ -324,7 +324,7 @@ export default function PostDetails() {
           onClick={() => setIsCommentsVisible(!isCommentsVisible)}
           className="comment-button"
         >
-          <img src={`${process.env.PUBLIC_URL}/comments.png`} alt="Comments" />
+          <img src={`/comments.png`} alt="Comments" />
           <span>{post.comments || 0}</span>
         </button>
       </div>
@@ -366,11 +366,11 @@ export default function PostDetails() {
                       src={
                         userInfo.photoURL?.startsWith('http')
                           ? userInfo.photoURL
-                          : `${process.env.PUBLIC_URL}${userInfo.photoURL || '/no_avatar.png'}`
+                          : `${userInfo.photoURL || '/no_avatar.png'}`
                       }
                       alt={userInfo.displayName || 'Unknown User'}
                       className="comment-avatar"
-                      onError={(e) => (e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`)}
+                      onError={(e) => (e.target.src = `/no_avatar.png`)}
                     />
                       <span>{comment.author}</span>
                     </Link>
