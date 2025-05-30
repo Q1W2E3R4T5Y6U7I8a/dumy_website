@@ -5,13 +5,14 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "build"
+        "distDir": "build",
+        "cleanUrls": true
       }
     }
   ],
   "routes": [
     {
-      "src": "/(.*\\.(ico|png|jpg|jpeg|gif|svg|mp3|mp4|wav|ogg))",
+      "src": "/(.*\\.(png|jpg|jpeg|gif|svg|ico|mp3|wav|ogg))",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable",
         "Content-Type": "image/png"
@@ -27,6 +28,14 @@
     {
       "src": "/(.*)",
       "dest": "/index.html"
-    }
+    },
+    {
+      "src": "/(.*\\.mp3)",
+      "headers": {
+        "Content-Type": "audio/mpeg",
+        "Cache-Control": "public, max-age=31536000, immutable"
+      },
+      "dest": "/$1"
+    } 
   ]
 }
