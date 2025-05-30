@@ -34,7 +34,7 @@ import EditBook from './components/pages/BookDetails/EditBook';
 const App = () => {
   return (
     <AuthProvider>
-      <Router basename="/">
+      <Router basename={process.env.PUBLIC_URL || ''}>
         <div className="app">
           <BackgroundMusic>
             <NavBar />
