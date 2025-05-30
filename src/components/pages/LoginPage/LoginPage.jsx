@@ -118,7 +118,7 @@ const LoginPage = () => {
           disabled={loading}
         >
           <img 
-            src='google_logo.png'
+            src='/google_logo.png'
             alt="Google logo" 
             className="google-logo"
           />
