@@ -6,6 +6,8 @@ import { signInWithEmailAndPassword,
 import { auth } from '../../../firebase';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.scss';
+//
+import googleLogo from '../../../assets/images/google_logo.png';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -118,7 +120,7 @@ const LoginPage = () => {
           disabled={loading}
         >
           <img 
-            src="/google_logo.png"
+            src={googleLogo}
             alt="Google logo" 
             className="google-logo"
           />
