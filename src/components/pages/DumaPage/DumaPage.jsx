@@ -19,7 +19,7 @@ const initialElements = {
   water: 1
 };
 
-const swipeSound = new Audio(`/card_swipe.mp3`);
+const swipeSound = new Audio('/card_swipe.mp3');
 
 export default function DumaPage() {
   const [showEditor, setShowEditor] = useState(false);
