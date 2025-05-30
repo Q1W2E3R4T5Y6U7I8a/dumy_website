@@ -5,7 +5,8 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "build"
+        "distDir": "build",
+        "cleanUrls": true
       }
     }
   ],
@@ -17,14 +18,24 @@
       }
     },
     {
-      "src": "/(.*).mp3",
+      "src": "/music/(.*).mp3",
       "headers": {
-        "Content-Type": "audio/mpeg"
+        "Content-Type": "audio/mpeg",
+        "Cache-Control": "public, max-age=31536000"
       }
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/index.html",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8"
+      }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
