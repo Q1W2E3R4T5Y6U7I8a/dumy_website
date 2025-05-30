@@ -16,11 +16,13 @@
     "react-scripts": "5.0.1",
     "sass": "^1.89.0",
     "swiper": "^11.2.6",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@vercel/static-build": "^1.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+      "build": "CI=false react-scripts build",
+  "vercel-build": "npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
