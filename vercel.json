@@ -2,14 +2,14 @@
   "version": 2,
   "routes": [
     {
-      "src": "/dumy_website/static/(.*)",
+      "src": "/static/(.*)",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable"
       }
     },
     {
-      "src": "/dumy_website/(.*)",
-      "dest": "/dumy_website/index.html"
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
