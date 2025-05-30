@@ -14,14 +14,7 @@
         "Content-Type": "audio/mpeg"
       }
     },
-
-    {
-      "src": "/background_duma.mp3",
-      "headers": {
-        "Content-Type": "audio/mpeg"
-      }
-    },
-
+    
     {
       "src": "/(.*)",
       "dest": "/index.html"
