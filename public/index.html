@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <base href="/dumy_website/" /> <!-- Add this line -->
     <link rel="icon" href="./my_favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
@@ -11,12 +10,6 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>React App</title>
   </head>
-  <script>
-    if (window.location.pathname.startsWith('/dumy_website') && !window.location.pathname.endsWith('/')) {
-      sessionStorage.setItem('redirect', window.location.pathname);
-      window.location.pathname = '/dumy_website/';
-    }
-  </script>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
