@@ -21,7 +21,7 @@ const initialElements = {
 const swipeSound = new Audio(`${process.env.PUBLIC_URL}/card_swipe.mp3`);
 
 export default function DumaPage() {
-  const { playTrack, stopAllMusic } = useContext(AudioManagerContext);
+  const { playMusic, stopAllMusic } = useContext(AudioManagerContext);
   const [elements, setElements] = useState(initialElements);
   const [days, setDays] = useState(0);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -37,12 +37,12 @@ export default function DumaPage() {
   const [currentColor, setCurrentColor] = useState('transparent');
   const audioRef = useRef(null); 
 
-  useEffect(() => {
-    playTrack('duma');
-    return () => {
-      stopAllMusic();
-    };
-  }, [playTrack, stopAllMusic]);
+useEffect(() => {
+  playMusic('duma');
+  return () => {
+    stopAllMusic();
+  };
+}, [playMusic, stopAllMusic]);
 
   useEffect(() => {
     const currentCard = getCurrentCard();

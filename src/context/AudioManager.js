@@ -80,6 +80,12 @@ const AudioManager = ({ children }) => {
     playMusic(routeTrack);
   }, [location.pathname, playMusic]);
 
+  const stopAllMusic = () => {
+    bgMusicRef.current.pause();
+    bgMusicRef.current.currentTime = 0;
+    setIsPlaying(false);
+  };
+
   return (
     <AudioManagerContext.Provider value={{
       isPlaying,
@@ -92,6 +98,7 @@ const AudioManager = ({ children }) => {
       playSFX,
       playMusic,
       stopMusic,
+      stopAllMusic,
     }}>
       {children}
     </AudioManagerContext.Provider>
