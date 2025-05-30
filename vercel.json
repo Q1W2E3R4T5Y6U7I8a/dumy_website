@@ -1,24 +1,6 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build",
-        "cleanUrls": true
-      }
-    }
-  ],
   "routes": [
-    {
-      "src": "/(.*\\.(png|jpg|jpeg|gif|svg|ico|mp3|wav|ogg))",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable",
-        "Content-Type": "image/png"
-      },
-      "dest": "/$1"
-    },
     {
       "src": "/static/(.*)",
       "headers": {
@@ -28,14 +10,6 @@
     {
       "src": "/(.*)",
       "dest": "/index.html"
-    },
-    {
-      "src": "/(.*\\.mp3)",
-      "headers": {
-        "Content-Type": "audio/mpeg",
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "dest": "/$1"
-    } 
+    }
   ]
 }
