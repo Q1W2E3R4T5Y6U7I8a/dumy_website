@@ -6,11 +6,11 @@ const MusicPage = () => {
   const [currentTrackName, setCurrentTrackName] = useState('');
 
   const musicList = [
-    `/music_1.mp3`,
-    `/music_3.mp3`,
-    `/music_4.mp3`,
-    `/music_5.mp3`,
-    `/music_6.mp3`,
+    `${process.env.PUBLIC_URL}/music_1.mp3`,
+    `${process.env.PUBLIC_URL}/music_3.mp3`,
+    `${process.env.PUBLIC_URL}/music_4.mp3`,
+    `${process.env.PUBLIC_URL}/music_5.mp3`,
+    `${process.env.PUBLIC_URL}/music_6.mp3`,
   ];
 
   const handlePlay = (track) => {

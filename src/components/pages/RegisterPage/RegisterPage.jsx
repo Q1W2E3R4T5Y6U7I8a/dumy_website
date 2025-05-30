@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  createUserWithEmailAndPassword, 
-  sendEmailVerification,
-  signInWithPopup,
-  GoogleAuthProvider
-} from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth } from '../../../firebase';
 import { useNavigate } from 'react-router-dom';
 import './RegisterPage.scss';
@@ -16,9 +11,7 @@ const RegisterPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
   const navigate = useNavigate();
-
   const handleResendVerification = async () => {
     try {
       setError('');
@@ -69,23 +62,6 @@ const RegisterPage = () => {
     }
   };
 
-  const signUpWithGoogle = async () => {
-    try {
-      setError('');
-      setGoogleLoading(true);
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      
-      // Google sign-in automatically verifies email, so we can redirect
-      navigate('/books');
-    } catch (err) {
-      console.error('Google sign-up error:', err);
-      setError('Failed to sign up with Google. Please try again.');
-    } finally {
-      setGoogleLoading(false);
-    }
-  };
-
   if (success) {
     return (
       <div className="register-container">
@@ -116,7 +92,6 @@ const RegisterPage = () => {
       <div className="register-card">
         <h2>Create Account</h2>
         {error && <p className="error-message">{error}</p>}
-        
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email</label>
@@ -162,38 +137,6 @@ const RegisterPage = () => {
             ) : 'Register'}
           </button>
         </form>
-
-        <div className="divider">
-          <span>or</span>
-        </div>
-        
-        <button 
-          className="google-signin-button"
-          onClick={signUpWithGoogle}
-          disabled={googleLoading}
-        >
-          <img 
-            src="/google_logo.png"
-            alt="Google logo" 
-            className="google-logo"
-          />
-          {googleLoading ? (
-            <>
-              <span className="spinner"></span>
-              Signing Up...
-            </>
-          ) : 'Sign up with Google'}
-        </button>
-
-        <div className="auth-footer">
-          <p>Already have an account?</p>
-          <button 
-            className="link-button"
-            onClick={() => navigate('/login')}
-          >
-            Login
-          </button>
-        </div>
       </div>
     </div>
   );

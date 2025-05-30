@@ -18,8 +18,8 @@ const AudioManager = ({ children }) => {
 
   // Track map
   const trackMap = {
-    default: `/background_music.mp3`,
-    duma: `/background_duma.mp3`,
+    default: `${process.env.PUBLIC_URL}/background_music.mp3`,
+    duma: `${process.env.PUBLIC_URL}/background_duma.mp3`,
   };
 
   const getTrackForRoute = (path) => {

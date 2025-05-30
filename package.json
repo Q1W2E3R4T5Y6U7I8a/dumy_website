@@ -1,5 +1,5 @@
 {
-  "homepage": ".",
+  "homepage": "https://Q1W2E3R4T5Y6U7I8a.github.io/dumy_website",
   "name": "dumy",
   "version": "0.1.0",
   "private": true,
@@ -24,8 +24,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "deploy:vercel": "npm run build && vercel --prod"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

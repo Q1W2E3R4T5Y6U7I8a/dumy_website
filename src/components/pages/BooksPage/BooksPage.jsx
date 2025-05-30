@@ -104,7 +104,7 @@ const BooksPage = () => {
           description,
           imageUrl,
           userId: auth.currentUser.uid,
-          userPhotoURL: auth.currentUser.photoURL || `/no_avatar.png`,
+          userPhotoURL: auth.currentUser.photoURL || `${process.env.PUBLIC_URL}/no_avatar.png`,
           createdAt: new Date(),
           views: 0,
           likes: 0,
@@ -211,7 +211,7 @@ const BooksPage = () => {
                       src={
                         userAvatars[book.userId]?.startsWith('http')
                           ? userAvatars[book.userId]
-                          : `${userAvatars[book.userId] || '/no_avatar.png'}`
+                          : `${process.env.PUBLIC_URL}${userAvatars[book.userId] || '/no_avatar.png'}`
                       }
                       alt="User Avatar"
                       className="creator-avatar"

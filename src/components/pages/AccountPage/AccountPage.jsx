@@ -17,18 +17,18 @@ const AccountPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isCurrentUserProfile, setIsCurrentUserProfile] = useState(false);
   const avatarOptions = [
-    `/avatar_1.png`,
-    `/avatar_2.png`,
-    `/avatar_3.png`,
-    `/avatar_4.png`,
-    `/avatar_5.png`,
-    `/avatar_6.png`,
-    `/avatar_7.png`,
-    `/avatar_8.png`,
-    `/avatar_9.png`,
-    `/avatar_10.png`,
-    `/avatar_11.png`,
-    `/avatar_12.png`,
+    `${process.env.PUBLIC_URL}/avatar_1.png`,
+    `${process.env.PUBLIC_URL}/avatar_2.png`,
+    `${process.env.PUBLIC_URL}/avatar_3.png`,
+    `${process.env.PUBLIC_URL}/avatar_4.png`,
+    `${process.env.PUBLIC_URL}/avatar_5.png`,
+    `${process.env.PUBLIC_URL}/avatar_6.png`,
+    `${process.env.PUBLIC_URL}/avatar_7.png`,
+    `${process.env.PUBLIC_URL}/avatar_8.png`,
+    `${process.env.PUBLIC_URL}/avatar_9.png`,
+    `${process.env.PUBLIC_URL}/avatar_10.png`,
+    `${process.env.PUBLIC_URL}/avatar_11.png`,
+    `${process.env.PUBLIC_URL}/avatar_12.png`,
   ];
   const selectionOptions = {
     religion: ['Christianity', 'Islam', 'Hinduism', 'Buddhism', 'Judaism', 'Atheism', 'Other'],
@@ -168,7 +168,7 @@ const AccountPage = () => {
     try {
       if (!isCurrentUserProfile) return;
 
-      const relativeAvatarUrl = avatarUrl.replace(``, '');
+      const relativeAvatarUrl = avatarUrl.replace(`${process.env.PUBLIC_URL}`, '');
 
       await updateProfile(auth.currentUser, {
         photoURL: relativeAvatarUrl
@@ -230,13 +230,13 @@ const AccountPage = () => {
               src={
                 profileOwnerInfo.photoURL?.startsWith('http')
                   ? profileOwnerInfo.photoURL
-                  : `${profileOwnerInfo.photoURL || '/no_avatar.png'}`
+                  : `${process.env.PUBLIC_URL}${profileOwnerInfo.photoURL || '/no_avatar.png'}`
               }
               alt="Profile"
               className="current-avatar"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = `/no_avatar.png`;
+                e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`;
               }}
             />
             {isEditing ? (
@@ -262,7 +262,7 @@ const AccountPage = () => {
                 {avatarOptions.map((avatar, index) => (
                   <div
                     key={index}
-                    className={`avatar-option ${userInfo.photoURL === avatar.replace(``, '') ? 'selected' : ''}`}
+                    className={`avatar-option ${userInfo.photoURL === avatar.replace(`${process.env.PUBLIC_URL}`, '') ? 'selected' : ''}`}
                     onClick={() => handleAvatarSelect(avatar)}
                   >
                     <img src={avatar} alt={`Avatar ${index + 1}`} />
@@ -294,12 +294,12 @@ const AccountPage = () => {
                       src={
                         friend.photoURL?.startsWith('http')
                           ? friend.photoURL
-                          : `${friend.photoURL || '/no_avatar.png'}`
+                          : `${process.env.PUBLIC_URL}${friend.photoURL || '/no_avatar.png'}`
                       }
                       alt={friend.displayName}
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = `/no_avatar.png`;
+                        e.target.src = `${process.env.PUBLIC_URL}/no_avatar.png`;
                       }}
                     />
                     <Link to={`/account/${friend.id}`}>{friend.displayName}</Link>
@@ -459,7 +459,7 @@ const AccountPage = () => {
                     alt={book.title}
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = `/no_cover.png`;
+                      e.target.src = `${process.env.PUBLIC_URL}/no_cover.png`;
                     }}
                   />
                   <div className="book-details">
