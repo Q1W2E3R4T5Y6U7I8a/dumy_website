@@ -7,9 +7,26 @@
         "Cache-Control": "public, max-age=31536000, immutable"
       }
     },
+
+    {
+      "src": "/background_music.mp3",
+      "headers": {
+        "Content-Type": "audio/mpeg"
+      }
+    },
+
+    {
+      "src": "/background_duma.mp3",
+      "headers": {
+        "Content-Type": "audio/mpeg"
+      }
+    },
+
     {
       "src": "/(.*)",
       "dest": "/index.html"
     }
   ]
 }
+
+    
