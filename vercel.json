@@ -9,13 +9,6 @@
     },
 
     {
-      "src": "/background_music.mp3",
-      "headers": {
-        "Content-Type": "audio/mpeg"
-      }
-    },
-    
-    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
