@@ -6,7 +6,6 @@ import BottomNav from './components/common/BottomNav/BottomNav';
 import HomePage from './components/pages/HomePage/HomePage';
 import BooksPage from './components/pages/BooksPage/BooksPage';
 import DumyPage from './components/pages/DumyPage/DumyPage';
-import DumaPage from './components/pages/DumaPage/DumaPage';
 import AccountPage from './components/pages/AccountPage/AccountPage';
 import LoginPage from './components/pages/LoginPage/LoginPage';
 import RegisterPage from './components/pages/RegisterPage/RegisterPage';
@@ -22,6 +21,8 @@ import FriendsPage from './components/pages/FriendsPage/FriendsPage';
 import MusicPage from './components/pages/MusicPage/MusicPage';
 import MessagesPage from './components/pages/MessagesPage/MessagesPage';
 import ConversationPage from './components/pages/ConversationPage/ConversationPage';
+
+import DumaPage from './components/pages/DumaPage/DumaPage';
 
 import ChatDetails from './components/pages/ChatDetails/ChatDetails';
 import ChatPage from './components/pages/ChatPage/ChatPage';

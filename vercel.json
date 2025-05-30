@@ -8,8 +8,17 @@
       }
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "src": "/(.*)", 
+      "dest": "/",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8"
+      }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
